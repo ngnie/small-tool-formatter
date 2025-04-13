@@ -16,17 +16,14 @@ public class SmallToolFormatter implements Executor<String[]> {
         Parser parser = config.getArgumentParser();
         InputReader inputReader = config.getInputReader();
         OutputWriter outputWriter = config.getOutputWriter();
-
         Argument argument = parser.parse(args);
-
         if (argument.getHelp()) {
             outputWriter.write(config.getHelpDescription());
-            System.exit(0);
+        } else {
+            String input = inputReader.read();
+            LineFormatter lineFormatter = config.getLineFormatter(argument);
+            String output = lineFormatter.format(input);
+            outputWriter.write(output);
         }
-
-        String input = inputReader.read();
-        LineFormatter lineFormatter = config.getLineFormatter(argument);
-        String output = lineFormatter.format(input);
-        outputWriter.write(output);
     }
 }

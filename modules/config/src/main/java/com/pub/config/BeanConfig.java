@@ -3,9 +3,14 @@ package com.pub.config;
 import com.pub.adapter.argument.ArgumentParser;
 import com.pub.adapter.console.ConsoleInputReader;
 import com.pub.adapter.console.ConsoleOutputWriter;
-import com.pub.adapter.formatter.CenteredFormatter;
-import com.pub.adapter.formatter.LeftAlignFormatter;
-import com.pub.adapter.formatter.RightAlignFormatter;
+import com.pub.adapter.formatter.AlignFormatter;
+import com.pub.adapter.formatter.centered.CenteredResultAdder;
+import com.pub.adapter.formatter.left.LeftAligner;
+import com.pub.adapter.formatter.common.DefaultNewLineRemover;
+import com.pub.adapter.formatter.common.DefaultLineOrder;
+import com.pub.adapter.formatter.left.LeftTokenAdder;
+import com.pub.adapter.formatter.left.LeftResultAdder;
+import com.pub.adapter.formatter.right.*;
 import com.pub.domain.model.Argument;
 import com.pub.domain.port.*;
 import java.io.InputStream;
@@ -32,9 +37,27 @@ public class BeanConfig implements Config {
 
     public LineFormatter getLineFormatter(Argument argument) {
         return switch (argument.getFormatEnum()) {
-            case LEFT_ALIGNED -> new LeftAlignFormatter(argument.getWidth());
-            case RIGHT_ALIGNED -> new RightAlignFormatter(argument.getWidth());
-            case CENTERED -> new CenteredFormatter();
+            case LEFT_ALIGNED -> new AlignFormatter(
+                    new DefaultLineOrder(),
+                    new LeftAligner(),
+                    new LeftTokenAdder(),
+                    new LeftResultAdder(),
+                    new DefaultNewLineRemover(),
+                    argument.getWidth());
+            case RIGHT_ALIGNED -> new AlignFormatter(
+                    new ReverseLineOrder(),
+                    new RightAligner(),
+                    new RightTokenAdder(),
+                    new RightResultAdder(),
+                    new RightNewLineRemover(),
+                    argument.getWidth());
+            case CENTERED -> new AlignFormatter(
+                    new DefaultLineOrder(),
+                    new LeftAligner(),
+                    new LeftTokenAdder(),
+                    new CenteredResultAdder(argument.getWidth()),
+                    new DefaultNewLineRemover(),
+                    argument.getWidth());
             default -> throw new IllegalArgumentException(
                 String.format("Failed to create line formatter. type = %s", argument.getFormatEnum().type()));
         };

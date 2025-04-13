@@ -1,17 +1,13 @@
 # Intro
 The below is a description of the choices I made and why for this task - but also thoughts in general.
 
-Upon reading the task description, I especially took note of these two statements:
+Upon reading the task description, I took note of these two statements:
 
 * The application must be written in a way that makes it possible to implement remaining algorithms without any considerable changes to existing code.
 * It is allowed to use junit dependency for tests.
 
-The above statements are not mutual exclusive, on the contrary, they are like the "alpha" and the "omega", in my mind. Not practicing these
-principles lead to not *Clean Code* and at the end of the day, technical debt.
-
-And basically
-
-    Technical Debt == Dead Project
+The above statements are like the "alpha" and the "omega", in my mind. Not practicing these principles lead to not
+*Clean Code* and at the end of the day, technical debt.
 
 So with the above in mind - code that can be unit tested, reused and extended - but also with Spring-boot in mind -
 I have used the *Port Adapter* pattern for the task.
@@ -19,24 +15,25 @@ I have used the *Port Adapter* pattern for the task.
 Yes, it is completely over-kill for the task being, but it illustrates the point.
 
 # Port adapter
-Also called the *Hexagon* pattern (I guess they borrowed a bit from DDD i.e. Domain Driven Design). It came out around 2008-2011.
+Also called the *Hexagon* pattern. I guess the term is borrowed from DDD i.e. Domain Driven Design, and it was coined around 2008-2011.
 
-I was introduced to this pattern by a tech lead person and in the beginning, I didn't like it at all.
+I was introduced to this pattern by a tech lead person. In the beginning, I didn't like it at all.
 
 Some of my thoughts were:
 
 * Oh well, I know perfectly well how to decouple.
-* I know how to use an interface - what have we - strategy and visitor (the other way around).
+* I know how to use an interface. What have we? Strategy, visitor, delegator etc.
 * And yes, I know SOLID, principles, patterns and best practice.
 * I know how to do unit test.
 * It is waste of time with all these bloated adapters i.e. maven modules. It is confusing.
 * I can perfectly well make a nice project structure - without modules.
 * .. etc. etc.
 
-The fact is that I use it now. In every larger Spring-boot project with many developers - I recommend this pattern.
+The fact is that I use it now. I recommend this pattern in every larger Spring-boot project - with many developers.
 Why? I would like to explain the pattern.
 
 It consists of these elements (maven modules):
+
 * Port (interfaces)
 * Adapters (raw implementation)
 * Domain (model i.e. POJO's and interfaces)
@@ -46,7 +43,7 @@ It consists of these elements (maven modules):
 
 ## Note
 The pattern is called *Port and Adapter*, but actually the "port part" are the interfaces used which are located in
-the domain module. In the following the *Port* is par of the *Domain*.
+the domain module. In the following the *Port* is part of the *Domain*.
 
 ## Adapters
 An *Adapter* is an implementation of some resource using raw types and methods from a particular library.
@@ -94,12 +91,13 @@ The domain consists of the *Types* and *Ports* used in the project.
 
 ### Types
 This is basically POJO's without any annotations besides (maybe) Lombok.
-*Important:* the (use-case) business logic only uses domain types (not raw types).
+
+*Important:* the use-case (business logic) only uses domain types (not raw 3rd part library types and methods).
 
 ### Port
 Here the port interfaces reside each implemented by some adapter.
 
-*Important:* the business logic (use-case) only uses port interfaces (not a concrete implementation of an adapter).
+*Important:* the use-case (business logic) only uses port interfaces (not a concrete implementation of an adapter).
 
 ## Use-case
 The use-case is the business logic. From a dependency point of view, it only knows the domain types and ports, not the
@@ -111,20 +109,22 @@ the business logic i.e. the use-case. They are decoupled through the port interf
 The *Config* module configures the dependency management i.e. bean instantiation and injection. It includes most maven dependencies.
 
 ## Main
-The *Main* module is responsible for config instantiation and then start the application. 
+The *Main* module is responsible for config instantiation and then starting the application. 
 
 ## Conclusion
 The result of using this pattern:
-* decoupled - the use-case (business logic) and adapters are completely decoupled. It is a requirement for Clean Code.
-* unit test - because of the decoupling, especially the use-case unit test becomes very simple. It only concentrates on
-  business logic, domain types and port interfaces - not mocking or stubbing of a concrete adapter implementation.
-  These concrete and library tight coupled library dependencies are located in the adapter (see Spring-boot H2 example later). 
+* decoupled - the use-case and adapters are completely decoupled. It is literately impossible to instantiate a concrete
+  adapter implementation, thus it is not possible to have raw 3rd part types and library methods mixed with business logic.
+  All in all, there is a good chance for *Clean Code*. 
+* unit test (use-case) - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
+  focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
+  are very simple. And SpringBootTest is not used in this test.
+* unit test (adapter) - this unit test is testing the concrete adapter implementation and which is tight coupled to 3rd part
+  library dependencies. And that is fine. Also test framework dependencies can be used in the adapter e.g. H2. But again,
+  neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. 
 * overview - it is easy to overview the project. Developers know where to look.
 * template - a standard project template can be made with most common modules and adapters.
 * standard - it (maybe) makes it easier to communicate and keep the project *clean* (what ever that term is defined as).
-
-## Conclusion
-
 
 # Questions
 

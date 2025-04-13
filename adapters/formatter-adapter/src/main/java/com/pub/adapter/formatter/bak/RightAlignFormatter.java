@@ -1,4 +1,4 @@
-package com.pub.adapter.formatter;
+package com.pub.adapter.formatter.bak;
 
 import com.pub.domain.port.LineFormatter;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class RightAlignFormatter implements LineFormatter {
 
             if (len >= width) {
                 if (!alignment.isEmpty()) {
-                    addSpacesToAlignment(alignment, width - alignment.length());
+                    align(alignment, width - alignment.length());
                     prependToResult(alignment, result);
                     clear(alignment);
                 }
@@ -34,11 +34,11 @@ public class RightAlignFormatter implements LineFormatter {
                     if (alignment.isEmpty()) {
                         alignment.insert(0, token);
                     } else {
-                        addSpacesToAlignment(alignment, 1);
+                        align(alignment, 1);
                         alignment.insert(0, token);
                     }
                 } else {
-                    addSpacesToAlignment(alignment, width - alignment.length());
+                    align(alignment, width - alignment.length());
                     prependToResult(alignment, result);
                     clear(alignment);
                     alignment.insert(0, token);
@@ -46,7 +46,7 @@ public class RightAlignFormatter implements LineFormatter {
             }
         }
 
-        addSpacesToAlignment(alignment, width - alignment.length());
+        align(alignment, width - alignment.length());
         prependToResult(alignment, result);
 
         removeFirstNewline(result);
@@ -74,7 +74,7 @@ public class RightAlignFormatter implements LineFormatter {
         prependToResult(new StringBuilder(alignment), result);
     }
 
-    private void addSpacesToAlignment(StringBuilder sb, int number) {
+    private void align(StringBuilder sb, int number) {
         if (!sb.isEmpty()) {
             sb.insert(0, " ".repeat(Math.max(0, number)));
         }
