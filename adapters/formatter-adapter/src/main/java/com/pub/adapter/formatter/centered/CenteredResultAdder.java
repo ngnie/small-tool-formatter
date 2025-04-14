@@ -12,18 +12,14 @@ public class CenteredResultAdder implements ResultAdder {
     @Override
     public void add(StringBuilder alignment, StringBuilder result) {
         if (!alignment.isEmpty()) {
-            String[] tokens = alignment.toString().split(" ");
-            String lastToken = tokens[tokens.length - 1];
-            int indexOfLastToken = alignment.indexOf(lastToken);
-            int textWidth = indexOfLastToken + lastToken.length();
-
+            int textWidth = indexOfLastNonSpaceChar(alignment) + 1;
             if (textWidth > width - 2) {
                 result.append(alignment).append("\n");
             } else {
                 int padding = (width - textWidth) / 2;
                 StringBuilder buf = new StringBuilder();
                 buf.append(" ".repeat(Math.max(0, padding)));
-                buf.append(alignment.subSequence(0, indexOfLastToken + lastToken.length()));
+                buf.append(alignment.subSequence(0, textWidth));
                 buf.append(" ".repeat(Math.max(0, padding)));
                 if (buf.length() + 1 == width)
                     buf.append(" ");
@@ -35,5 +31,14 @@ public class CenteredResultAdder implements ResultAdder {
     @Override
     public void add(String alignment, StringBuilder result) {
         add(new StringBuilder(alignment), result);
+    }
+
+    private int indexOfLastNonSpaceChar(StringBuilder sb) {
+        int index = sb.length() - 1;
+        while ((sb.charAt(index) == ' ') && (index != 0)) {
+            index--;
+        }
+
+        return index;
     }
 }
