@@ -30,9 +30,10 @@ public class AlignFormatter implements LineFormatter {
     @Override
     public String format(String input) {
         //String[] tokens = input.split("\\s+");
-        List<String> tokens = lineOrder.order(input);
         StringBuilder result = new StringBuilder();
         StringBuilder alignment = new StringBuilder();
+
+        List<String> tokens = lineOrder.order(input);
 
         for (String token : tokens) {
             int len = token.length();
