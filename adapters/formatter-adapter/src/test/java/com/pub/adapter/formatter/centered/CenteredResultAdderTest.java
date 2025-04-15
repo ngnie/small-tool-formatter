@@ -23,7 +23,7 @@ public class CenteredResultAdderTest {
 
     @ParameterizedTest
     @MethodSource("arguments")
-    public void centerAlignTest(int width, String alignment, String result, String expected, String description) {
+    public void centerAlignTest(int width, String alignment, String result, String expected, String ignoredDescription) {
         CenteredResultAdder adder = new CenteredResultAdder(width);
         StringBuilder sbResult = new StringBuilder(result);
         adder.add(new StringBuilder(alignment), sbResult);

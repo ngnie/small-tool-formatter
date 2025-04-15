@@ -33,7 +33,7 @@ public class LeftResultAdderTest {
 
     @ParameterizedTest
     @MethodSource("validArguments")
-    public void testLeftResultAdder(String alignment, String result, String expected, String description) {
+    public void testLeftResultAdder(String alignment, String result, String expected, String ignoredDescription) {
         StringBuilder sbAlignment = new StringBuilder(alignment);
         StringBuilder sbResult = new StringBuilder(result);
         ResultAdder adder = new LeftResultAdder();

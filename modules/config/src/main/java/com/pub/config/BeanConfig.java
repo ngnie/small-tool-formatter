@@ -12,6 +12,7 @@ import com.pub.adapter.formatter.left.LeftTokenAdder;
 import com.pub.adapter.formatter.left.LeftResultAdder;
 import com.pub.adapter.formatter.right.*;
 import com.pub.domain.model.Argument;
+import com.pub.domain.model.FormatEnum;
 import com.pub.domain.port.*;
 import java.io.InputStream;
 import java.util.Objects;
@@ -36,30 +37,32 @@ public class BeanConfig implements Config {
     }
 
     public LineFormatter getLineFormatter(Argument argument) {
-        return switch (argument.getFormatEnum()) {
+        FormatEnum formatEnum = argument.getFormatEnum().orElseThrow(() -> new NullPointerException("FormatEnum is null"));
+        Integer width = argument.getWidth().orElseThrow(() -> new NullPointerException("Width is null"));
+        return switch (formatEnum) {
             case LEFT_ALIGNED -> new AlignFormatter(
                     new DefaultLineOrder(),
                     new LeftAligner(),
                     new LeftTokenAdder(),
                     new LeftResultAdder(),
                     new DefaultNewLineRemover(),
-                    argument.getWidth());
+                    width);
             case RIGHT_ALIGNED -> new AlignFormatter(
                     new ReverseLineOrder(),
                     new RightAligner(),
                     new RightTokenAdder(),
                     new RightResultAdder(),
                     new RightNewLineRemover(),
-                    argument.getWidth());
+                    width);
             case CENTERED -> new AlignFormatter(
                     new DefaultLineOrder(),
                     new LeftAligner(),
                     new LeftTokenAdder(),
-                    new CenteredResultAdder(argument.getWidth()),
+                    new CenteredResultAdder(width),
                     new DefaultNewLineRemover(),
-                    argument.getWidth());
+                    width);
             default -> throw new IllegalArgumentException(
-                String.format("Failed to create line formatter. type = %s", argument.getFormatEnum().type()));
+                String.format("Failed to create line formatter. type = %s", formatEnum.type()));
         };
     }
 

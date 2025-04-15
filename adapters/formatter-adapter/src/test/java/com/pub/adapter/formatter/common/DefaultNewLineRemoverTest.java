@@ -13,8 +13,8 @@ public class DefaultNewLineRemoverTest {
     @Test
     public void testNullInput() {
         NewLineRemover remover = new DefaultNewLineRemover();
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
+        NullPointerException thrown = assertThrows(
+                NullPointerException.class,
                 () -> remover.remove(null));
         assertEquals("Trying to remove newline. String builder is null", thrown.getMessage());
     }

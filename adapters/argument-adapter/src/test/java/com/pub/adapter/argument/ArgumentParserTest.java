@@ -27,12 +27,12 @@ public class ArgumentParserTest {
 
     @ParameterizedTest
     @MethodSource("helpModeArguments")
-    public void testHelpMode(String[] args, String description) {
+    public void testHelpMode(String[] args, String ignoredDescription) {
         ArgumentParser parser = new ArgumentParser();
         Argument argument = parser.parse(args);
         assert argument.getHelp();
-        assert argument.getFormatEnum() == null;
-        assert argument.getWidth() == null;
+        assert argument.getFormatEnum().isEmpty();
+        assert argument.getWidth().isEmpty();
     }
 
     static Stream<Arguments> parseModeArguments() {
@@ -44,12 +44,12 @@ public class ArgumentParserTest {
 
     @ParameterizedTest
     @MethodSource("parseModeArguments")
-    public void testParseMode(FormatEnum formatEnum, String width, String description) {
+    public void testParseMode(FormatEnum formatEnum, String width, String ignoredDescription) {
         ArgumentParser parser = new ArgumentParser();
         String[] args = {"--type", formatEnum.type(), "--width", width};
         Argument argument = parser.parse(args);
-        assert argument.getFormatEnum() == formatEnum;
-        assert argument.getWidth().compareTo(Integer.valueOf(width)) == 0;
+        assert argument.getFormatEnum().orElseThrow() == formatEnum;
+        assert argument.getWidth().orElseThrow().compareTo(Integer.valueOf(width)) == 0;
         assert ! argument.getHelp();
     }
 
@@ -62,7 +62,7 @@ public class ArgumentParserTest {
 
     @ParameterizedTest
     @MethodSource("parseModeKeyNotFoundArguments")
-    public void testParseModeKeysNotFound(String typeKey, String widthKey, String expectedMessage, String description) {
+    public void testParseModeKeysNotFound(String typeKey, String widthKey, String expectedMessage, String ignoredDescription) {
         ArgumentParser parser = new ArgumentParser();
         FormatEnum someFormatEnum = FormatEnum.LEFT_ALIGNED;
         String someWidth = "10";
@@ -110,7 +110,7 @@ public class ArgumentParserTest {
 
     @ParameterizedTest
     @MethodSource("wrongNumberOfArguments")
-    public void testWrongNumberOfArguments(String[] args, String description) {
+    public void testWrongNumberOfArguments(String[] args, String ignoredDescription) {
         ArgumentParser parser = new ArgumentParser();
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,

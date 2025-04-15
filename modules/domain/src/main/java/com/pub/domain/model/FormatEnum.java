@@ -31,10 +31,7 @@ public enum FormatEnum {
     }
 
     public static FormatEnum toEnum(String type) {
-        if (Objects.isNull(type)) {
-            throw new IllegalArgumentException("Format type can not be null");
-        }
-
+        Objects.requireNonNull(type, "Format type can not be null");
         return Arrays.stream(FormatEnum.values())
             .filter(x -> x.type().equalsIgnoreCase(type))
             .findFirst().orElseThrow(() ->

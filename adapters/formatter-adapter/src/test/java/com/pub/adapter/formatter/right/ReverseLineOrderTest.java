@@ -1,6 +1,5 @@
 package com.pub.adapter.formatter.right;
 
-import com.pub.adapter.formatter.common.DefaultLineOrder;
 import com.pub.adapter.formatter.common.LineOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

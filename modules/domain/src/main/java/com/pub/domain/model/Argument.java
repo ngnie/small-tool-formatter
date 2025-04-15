@@ -1,11 +1,12 @@
 package com.pub.domain.model;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Argument {
     final private FormatEnum formatEnum;
     final private Integer width;
-    final private Boolean help;
+    final private boolean help;
 
     public Argument(FormatEnum formatEnum, Integer width) {
         this.formatEnum = formatEnum;
@@ -13,21 +14,21 @@ public class Argument {
         this.help = false;
     }
 
-    public Argument(Boolean help) {
+    public Argument(boolean help) {
         this.formatEnum = null;
         this.width = null;
         this.help = help;
     }
 
-    public FormatEnum getFormatEnum() {
-        return formatEnum;
+    public Optional<FormatEnum> getFormatEnum() {
+        return Objects.nonNull(formatEnum) ? Optional.of(formatEnum) : Optional.empty();
     }
 
-    public Integer getWidth() {
-        return width;
+    public Optional<Integer> getWidth() {
+        return Objects.nonNull(width) ? Optional.of(width) : Optional.empty();
     }
 
-    public Boolean getHelp() {
+    public boolean getHelp() {
         return help;
     }
 }

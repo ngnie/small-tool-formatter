@@ -31,7 +31,7 @@ public class AlignFormatterTest {
 
     @ParameterizedTest
     @MethodSource("leftAlignArguments")
-    public void leftAlignTest(int width, String input, String expected, String description) {
+    public void leftAlignTest(int width, String input, String expected, String ignoredDescription) {
         AlignFormatter formatter = new AlignFormatter(
                 new DefaultLineOrder(),
                 new LeftAligner(),
@@ -59,7 +59,7 @@ public class AlignFormatterTest {
 
     @ParameterizedTest
     @MethodSource("rightAlignArguments")
-    public void rightAlignTest(int width, String input, String expected, String description) {
+    public void rightAlignTest(int width, String input, String expected, String ignoredDescription) {
         AlignFormatter formatter = new AlignFormatter(
                 new ReverseLineOrder(),
                 new RightAligner(),
@@ -87,7 +87,7 @@ public class AlignFormatterTest {
 
     @ParameterizedTest
     @MethodSource("centerAlignArguments")
-    public void centerAlignTest(int width, String input, String expected, String description) {
+    public void centerAlignTest(int width, String input, String expected, String ignoredDescription) {
         AlignFormatter formatter = new AlignFormatter(
                 new DefaultLineOrder(),
                 new LeftAligner(),

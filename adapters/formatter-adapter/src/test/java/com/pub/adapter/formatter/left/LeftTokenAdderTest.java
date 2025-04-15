@@ -33,7 +33,7 @@ public class LeftTokenAdderTest {
 
     @ParameterizedTest
     @MethodSource("validArguments")
-    public void testLeftTokenAdder(String result, String token, String expected, String description) {
+    public void testLeftTokenAdder(String result, String token, String expected, String ignoredDescription) {
         StringBuilder sbResult = new StringBuilder(result);
         TokenAdder adder = new LeftTokenAdder();
         adder.add(sbResult, token);

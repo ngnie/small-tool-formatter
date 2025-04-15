@@ -1,13 +1,10 @@
 package com.pub.adapter.formatter.right;
 
 import com.pub.adapter.formatter.common.ResultAdder;
-import com.pub.adapter.formatter.left.LeftResultAdder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -36,7 +33,7 @@ public class RightResultAdderTest {
 
     @ParameterizedTest
     @MethodSource("validArguments")
-    public void testRightResultAdder(String alignment, String result, String expected, String description) {
+    public void testRightResultAdder(String alignment, String result, String expected, String ignoredDescription) {
         StringBuilder sbAlignment = new StringBuilder(alignment);
         StringBuilder sbResult = new StringBuilder(result);
         ResultAdder adder = new RightResultAdder();
