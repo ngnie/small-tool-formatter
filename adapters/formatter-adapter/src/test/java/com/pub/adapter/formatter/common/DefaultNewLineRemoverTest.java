@@ -22,9 +22,9 @@ public class DefaultNewLineRemoverTest {
     static Stream<Arguments> arguments() {
         return Stream.of(
             Arguments.of("", "", "The empty input"),
-            Arguments.of("foobar", "foobar", "The empty input"),
-            Arguments.of("\nfoobar", "\nfoobar", "The empty input"),
-            Arguments.of("foobar\n", "foobar", "The empty input"));
+            Arguments.of("foobar", "foobar", "Nothing to remove"),
+            Arguments.of("\nfoobar", "\nfoobar", "Nothing to remove"),
+            Arguments.of("foobar\n", "foobar", "Remove newline at the end of line"));
     }
 
     @ParameterizedTest

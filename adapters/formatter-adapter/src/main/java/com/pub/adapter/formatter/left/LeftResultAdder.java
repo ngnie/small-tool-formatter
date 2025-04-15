@@ -7,8 +7,8 @@ public class LeftResultAdder implements ResultAdder {
 
     @Override
     public void add(StringBuilder alignment, StringBuilder result) {
-        Objects.requireNonNull(alignment, "Trying to add alignment to result. Alignment is null");
-        Objects.requireNonNull(result, "Trying to add alignment to result. Result is null");
+        Objects.requireNonNull(alignment, "Trying to append alignment to result. Alignment is null");
+        Objects.requireNonNull(result, "Trying to append alignment to result. Result is null");
 
         if (!alignment.isEmpty()) {
             result.append(alignment).append("\n");

@@ -25,6 +25,6 @@ public class DefaultLineOrderTest {
     public void testDefaultLineOrder(String input, List<String> expected) {
         LineOrder lineOrder = new DefaultLineOrder();
         List<String> result = lineOrder.order(input);
-        assert result.stream().sorted().toList().equals(expected.stream().sorted().toList());
+        assert result.stream().toList().equals(expected.stream().toList());
     }
 }

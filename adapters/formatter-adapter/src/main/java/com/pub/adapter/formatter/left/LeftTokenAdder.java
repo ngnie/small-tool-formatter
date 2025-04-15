@@ -7,8 +7,8 @@ public class LeftTokenAdder implements TokenAdder {
 
     @Override
     public void add(StringBuilder sb, String token) {
-        Objects.requireNonNull(sb, "Trying to add token to result. sb is null.");
-        Objects.requireNonNull(token, "Trying to add token to result. token is null.");
+        Objects.requireNonNull(sb, "Trying to append token to result. sb is null.");
+        Objects.requireNonNull(token, "Trying to append token to result. token is null.");
         sb.append(token);
     }
 }
