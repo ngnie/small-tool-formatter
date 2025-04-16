@@ -9,6 +9,8 @@ public class Argument {
     final private boolean help;
 
     public Argument(FormatEnum formatEnum, Integer width) {
+        Objects.requireNonNull(formatEnum, "FormatEnum is null");
+        Objects.requireNonNull(width, "Width is null");
         this.formatEnum = formatEnum;
         this.width = width;
         this.help = false;

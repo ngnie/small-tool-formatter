@@ -29,9 +29,12 @@ public class SmallToolFormatterTest {
         SmallToolFormatter formatter = new SmallToolFormatter(config);
         Argument argument = new Argument(true);
         when(parser.parse(any())).thenReturn(argument);
-        formatter.execute(new String[]{"some-array-that-doesn't-matter"});
+        formatter.execute(new String[]{"some-array"});
         verify(config, times(1)).getHelpDescription();
         verify(inputReader, times(0)).read();
+        verify(config, times(0)).getLineFormatter(any());
+        verify(lineFormatter, times(0)).format(any());
+        verify(outputWriter, times(1)).write(any());
     }
 
     @Test
@@ -39,8 +42,11 @@ public class SmallToolFormatterTest {
         SmallToolFormatter formatter = new SmallToolFormatter(config);
         Argument argument = new Argument(FormatEnum.LEFT_ALIGNED, 3);
         when(parser.parse(any())).thenReturn(argument);
-        formatter.execute(new String[]{"some-array-that-doesn't-matter"});
+        formatter.execute(new String[]{"some-array"});
         verify(config, times(0)).getHelpDescription();
         verify(inputReader, times(1)).read();
+        verify(config, times(1)).getLineFormatter(any());
+        verify(lineFormatter, times(1)).format(any());
+        verify(outputWriter, times(1)).write(any());
     }
 }

@@ -5,7 +5,6 @@ import com.pub.domain.model.FormatEnum;
 import com.pub.domain.port.Parser;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 
 public class ArgumentParser implements Parser {
     final private static int HELP_MODE_ARG_NUMBER = 1;
@@ -27,9 +26,6 @@ public class ArgumentParser implements Parser {
                     width = getWidth(itr.next());
                 }
             }
-
-            Objects.requireNonNull(formatEnum, "FormatEnum is null");
-            Objects.requireNonNull(width, "Width is null");
 
             return new Argument(formatEnum, width);
 

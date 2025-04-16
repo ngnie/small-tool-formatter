@@ -61,8 +61,6 @@ public class BeanConfig implements Config {
                     new CenteredResultAdder(width),
                     new DefaultNewLineRemover(),
                     width);
-            default -> throw new IllegalArgumentException(
-                String.format("Failed to create line formatter. type = %s", formatEnum.type()));
         };
     }
 

@@ -225,6 +225,33 @@ If doing this again, I would have choose the latter solution i.e. injecting prim
 # Enum
 My comments on enum.
 
+LEFT_ALIGNED(0, "left", "Left aligned"),
+RIGHT_ALIGNED(1, "right", "Left aligned"),
+CENTERED(2, "centered", "Centered");
+
+    final private int id;
+    final private String type;
+    final private String description;
+
+    FormatEnum(int id, String type, String description) {
+        this.id = id;
+        this.type = type;
+        this.description = description;
+    }
+
+    public int id() {
+        return id;
+    }
+
+
+    public static FormatEnum toEnum(int id) {
+        return Arrays.stream(FormatEnum.values())
+            .filter(x -> x.id() == id)
+            .findFirst().orElseThrow(() ->
+                new IllegalArgumentException(String.format("Unknown format type. id = %d", id)));
+    }
+
+
 id (persisting)
 AttributeConverter... Spring-boot upgrade. Unpleasant surprises upon upgrade from e.g. 2.x.x to 3.x.x.
 
