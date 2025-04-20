@@ -193,12 +193,7 @@ I decided not to use Optional, since I see it as an error if the enum is not fou
 Also, if returning an optional, the exception thrown, is an interpretation - not the actual cause.
 
 # Console (adapter)
-
-## ConsoleInputReader
-The reader is tightly coupled.
-
-## ConsoleOutputWriter
-The writer is also tightly coupled.
+Both the *ConsoleInputReader* and the *ConsoleOutputWriter* are tightly coupled i.e. making the Scanner resource and using println respectively.
 
 # Formatter adapter
 In the beginning I had 2 classes for left and right formatting, but the loop is basically doing the same thing regardless

@@ -2,7 +2,6 @@ package com.pub.format.adapter.formatter;
 
 import com.pub.format.modules.domain.port.LineFormatter;
 import com.pub.format.adapter.formatter.common.*;
-
 import java.util.List;
 
 public class AlignFormatter implements LineFormatter {
