@@ -45,7 +45,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.pub.core.Main</mainClass>
+                            <mainClass>com.pub.format.modules.core.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

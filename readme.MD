@@ -39,7 +39,7 @@ It consists of these elements (maven modules):
 * Domain (model i.e. POJO's and interfaces)
 * Core (SpringBoot application startup)
 * Config (Beans, properties etc.)
-* Usecase (the business logic)
+* Use-case (the business logic)
 
 ## Note
 The pattern is called *Port and Adapter*, but actually the "port part" are the interfaces used which are located in
@@ -64,15 +64,6 @@ Example types are:
 
 The adapter must implement a (port) interface.
 
-### Dependencies
-The adapter only has two Maven dependencies:
-
-* the library used for that particular adapter e.g. Apache Kafka.
-* the domain model.
-
-Besides the above, the adapter is oblivious to all other modules in the project.
-Also, adapters do not know about other adapters or use (inject) other adapters.
-
 ### Calling
 The adapter can be:
 
@@ -84,7 +75,20 @@ Parameters used in constructors and methods are domain type (or native types).
 
 ### Mapping
 Mappers are located in the adapter. They're able to map between domain types and raw adapter types.
-Raw adapter types does *not* escape the adapter.
+Raw adapter types does *not* escape the adapter. It is very important.
+
+### Dependencies
+The adapter only has two Maven dependencies:
+
+* the library used for that particular adapter e.g. Apache Kafka.
+* the domain model.
+
+Besides the above, the adapter is oblivious to all other modules in the project.
+
+### Important
+Important rules:
+* adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
+* adapters do not know about other adapters or use (inject) other adapters.
 
 ## Domain
 The domain consists of the *Types* and *Ports* used in the project.
@@ -92,24 +96,40 @@ The domain consists of the *Types* and *Ports* used in the project.
 ### Types
 This is basically POJO's without any annotations besides (maybe) Lombok.
 
-*Important:* the use-case (business logic) only uses domain types (not raw 3rd part library types and methods).
-
 ### Port
 Here the port interfaces reside each implemented by some adapter.
 
-*Important:* the use-case (business logic) only uses port interfaces (not a concrete implementation of an adapter).
+### Dependencies
+The domain modules have no dependencies to other modules.
+
+### Important
+And again, an important rule for the domain module is:
+* the domain module has no dependency to other maven modules.
 
 ## Use-case
 The use-case is the business logic. From a dependency point of view, it only knows the domain types and ports, not the
 concrete adapter implementation. It is literately impossible to instantiate a concrete type of some adapter and use it
-in the use case. And vice versa, from a dependency point of view, the adapters do not know anything about
-the business logic i.e. the use-case. They are decoupled through the port interface.
+in the use case.
+
+### Dependencies
+* domain model (and port interfaces)
+ 
+### Important
+In other words, these rules are very important for the use-case module:
+* only uses domain types (not raw 3rd part library types or methods).
+* only uses port interfaces (not a concrete implementation of an adapter).
 
 ## Config
-The *Config* module configures the dependency management i.e. bean instantiation and injection. It includes most maven dependencies.
+The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
+
+### Dependencies
+What ever maven dependencies that are needed to instantiate resources.
+
+### Important
+It only does Dependency Management i.e. instantiation and configuration. E.g. for Spring-boot also security config.
 
 ## Main
-The *Main* module is responsible for config instantiation and then starting the application. 
+The *Main* module is responsible for starting the application e.g. like *main* or *SpringBootApplication*.
 
 ## Conclusion
 The result of using this pattern:
@@ -118,12 +138,15 @@ The result of using this pattern:
   All in all, there is a good chance for *Clean Code*. 
 * unit test (use-case) - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
   focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
-  are very simple. And SpringBootTest is not used in this test.
+  are very simple i.e. configuration details for mocking libraries like e.g. H2 are not bloating the use-case unit test. 
+  And SpringBootTest is not used in this test.
 * unit test (adapter) - this unit test is testing the concrete adapter implementation and which is tight coupled to 3rd part
-  library dependencies. And that is fine. Also test framework dependencies can be used in the adapter e.g. H2. But again,
-  neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. 
-* overview - it is easy to overview the project. Developers know where to look.
-* template - a standard project template can be made with most common modules and adapters.
+  library dependencies. And that is fine. And again, test library dependencies can be used in the adapter e.g. H2. But again,
+  neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. In other words, the separation is
+  two-fold, both in the production code (abstraction) and thus in the unit test.
+* overview - it is easy to overview the project since there is a clean distinction between use-case and adapter implementation.
+  Especially in projects with many developers commiting to the same project.
+* template - a standard project template can be made with most common modules and adapters e.g. Kafka, Cassandra, Mongodb, SQL etc. etc..
 * standard - it (maybe) makes it easier to communicate and keep the project *clean* (what ever that term is defined as).
 
 # Questions
@@ -140,28 +163,24 @@ Where
 
 I have chosen to ignore this since I can't figure out any other logic/pattern around it.
 
-
-# ArgumentParser
-The properties could be injected from outside, but then again, it will not be more generic by that as of now.
+# ArgumentParser (adapter)
 
 ## Optional
-A note on the use of Optional.
-
 Instead of:
 
     FormatEnum formatEnum = null;
     Integer width = null;
 
-, I could have used:
+I could have used:
 
     Optional<FormatEnum> oFormatEnum = Optional.empty();
     Optional<Integer: width = Optional.empty();
 
-, and then e.g.
+And then e.g.
 
     FormatEnum formatEnum = oFormatEnum.orElseThrow(() -> new IllegalArgumentException("FormatEnum is null"));
 
-, and let the toEnum return an optional:
+And let the toEnum return an optional:
 
     public static Optional<FormatEnum> toEnum(String type) {
         ...
@@ -170,64 +189,64 @@ Instead of:
             .findFirst();
     }
 
-, but then the exception thrown to the caller becomes an interpretation (the root cause is hidden). Then one could argue
-that the user does not need detailed info.. and that these details could be logged instead. But then again, I like to
-throw the details back to the caller, if mandatory. Also I like to avoid logging, especially in adapters, i.e. persist
-or log the exception at the caller. The code just becomes more clean without log statements all over the place.
-Secondly, I like to write stacktrace to db that is referenced to a workflowId (if that is the case).
+I decided not to use Optional, since I see it as an error if the enum is not found.
+Also, if returning an optional, the exception thrown, is an interpretation - not the actual cause.
 
-Properties
-Logging should be done.
+# Console (adapter)
 
-BeanConfig
-This class can be seen as the @Bean annotation in Spring i.e. the usage of DI.
+## ConsoleInputReader
+The reader is tightly coupled.
 
-# Formatter
-Comments about the formatters.
+## ConsoleOutputWriter
+The writer is also tightly coupled.
 
+# Formatter adapter
+In the beginning I had 2 classes for left and right formatting, but the loop is basically doing the same thing regardless
+the type of formatting. Thus, I decided to just have one class i.e. one loop in all - and then injecting resources depending
+on the type of format.
 
-Code like the below (LeftAlignFormatter):
+## Note on describing operators
+It can sometimes be easier to read code like that. As an example, the LeftAlignFormatter was like the below:
 
-             if (len >= width) {
-                if (!alignment.isEmpty()) {
-                    addSpacesToAlignment(alignment, width - alignment.length());
-                    appendToResult(alignment, result);
-                    clear(alignment);
-                }
+     if (len >= width) {
+        if (!alignment.isEmpty()) {
+            addSpacesToAlignment(alignment, width - alignment.length());
+            appendToResult(alignment, result);
+            clear(alignment);
+        }
 
-                appendToResult(token, result);
+        appendToResult(token, result);
 
-            } else {
-           ...
+    } else {
+   ...
 
-, could be written as
+, which could be written as:
 
-            if (isTokenGreaterThanOrEqualWidth(len, width)) {
-                if (isAlignmentNotEmpty(alignment)) {
-                    addSpacesAndAppendToResult(alignment, result, width);
-                }
+    if (isTokenGreaterThanOrEqualWidth(len, width)) {
+        if (isAlignmentNotEmpty(alignment)) {
+            addSpacesAndAppendToResult(alignment, result, width);
+        }
 
-                appendToResult(token, result);
+        appendToResult(token, result);
 
-            } else {
-           ...
+    } else {
+   ...
 
-The main logic in the loop is the same for left, right and center i.e. the private methods in the loop could take the format type
-as parameter and then depending on the type, the text would be left, right or center ie change between e.g. *append* and
-*insert*.
+Again, it depends on what people like as standard.
 
-One could also inject interface (Strategy) implementations of left, right and center e.g. either an implementation of adding spaces
-to the right, for left alignment, or inserting (prepending) spaces for right alignment. The good thing about that solution
-is that, there is only one class with one loop, though with several injected resources for left, right and center respectively.
+# BeanConfig
+This class can be seen as Spring-boot config class setting up @Beans for dependency management.
 
-If doing this again, I would have choose the latter solution i.e. injecting primitives (implementing interfaces)
+## Properties
+Logging should be done instead of just using *System.out.println* for the exception message.
 
 # Enum
-My comments on enum.
+I did not have any use for an *id* i.e. I removed it not to have a warning. But when I do need it, I write the type
+as below:
 
-LEFT_ALIGNED(0, "left", "Left aligned"),
-RIGHT_ALIGNED(1, "right", "Left aligned"),
-CENTERED(2, "centered", "Centered");
+    LEFT_ALIGNED(0, "left", "Left aligned"),
+    RIGHT_ALIGNED(1, "right", "Left aligned"),
+    CENTERED(2, "centered", "Centered");
 
     final private int id;
     final private String type;
@@ -243,6 +262,13 @@ CENTERED(2, "centered", "Centered");
         return id;
     }
 
+    public String type() {
+        return type;
+    }
+
+    public String description() {
+        return description;
+    }
 
     public static FormatEnum toEnum(int id) {
         return Arrays.stream(FormatEnum.values())
@@ -251,23 +277,29 @@ CENTERED(2, "centered", "Centered");
                 new IllegalArgumentException(String.format("Unknown format type. id = %d", id)));
     }
 
+    public static FormatEnum toEnum(String type) {
+        Objects.requireNonNull(type, "Format type can not be null");
+        return Arrays.stream(FormatEnum.values())
+            .filter(x -> x.type().equalsIgnoreCase(type))
+            .findFirst().orElseThrow(() ->
+                new IllegalArgumentException(String.format("Unknown format type. type = %s", type)));
+    }
 
-id (persisting)
-AttributeConverter... Spring-boot upgrade. Unpleasant surprises upon upgrade from e.g. 2.x.x to 3.x.x.
+Often the enum type is written to db and instead of a char type I like better to use integer in the db (for more on
+Hibernate, see below).
 
 # Hibernate
 My comment on Hibernate.
+AttributeConverter... Spring-boot upgrade. Unpleasant surprises upon upgrade from e.g. 2.x.x to 3.x.x.
 
 Have the extra mapping of the entity to domain model.
 
 Exclusion
 
+# Warnings
+I think it is important to remove compile and build warnings. I see it as technical debt. It is just waste of time
+constantly confirming that some warning should be ignored - which actually is wrong.
 
-
-Warnings
-There are no warnings in the build. It is quite important. It is like a mental overhead to be notified
-constantly about warnings or "errors" - that are not errors. False positive are just mental overhead and
-to me part of technical debt.
 
 
 # Spring-boot
@@ -283,7 +315,7 @@ Spring-boot projects (microservice) quickly take in a lot of dependencies like:
 * JDBC
 * HikariCP
 
-, and it can quickly become a problem with raw types and library methods used all over the place. It will, most likely,
+And it can quickly become a problem with raw types and library methods used all over the place. It will, most likely,
 be a problem sooner or later, since the project will start to be tight coupled with raw library types and methods i.e.
 having dependencies.
 If the project is created by 1 developer it can be fine, but usually many developers are working on the same project i.e.
@@ -302,7 +334,7 @@ Install these dependencies
 * Java 21
 * Maven (3.9.9) 
 
-, and set these environment variables
+And set these environment variables
 
     JAVA_HOME
     M2_HOME
@@ -335,7 +367,7 @@ Set the classpath to
 
 The main class is located in
 
-    com.pub.core.Main
+    com.pub.format.modules.core.Main
 
 Set the parameters in "Program arguments" (for parameter options, see "Run" above).
 
