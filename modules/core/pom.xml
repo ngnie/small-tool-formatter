@@ -5,23 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.pub</groupId>
-        <artifactId>public</artifactId>
+        <groupId>com.pub.format</groupId>
+        <artifactId>small-tool-formatter</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
+    <groupId>com.pub.format.modules</groupId>
     <artifactId>core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>com.pub</groupId>
+            <groupId>com.pub.format.modules</groupId>
             <artifactId>usecase</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.pub</groupId>
+            <groupId>com.pub.format.modules</groupId>
             <artifactId>config</artifactId>
         </dependency>
     </dependencies>

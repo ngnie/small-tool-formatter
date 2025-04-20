@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pub</groupId>
-    <artifactId>public</artifactId>
+    <groupId>com.pub.format</groupId>
+    <artifactId>small-tool-formatter</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -55,37 +55,37 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.pub.adapter</groupId>
+                <groupId>com.pub.format.adapters</groupId>
                 <artifactId>argument-adapter</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub.adapter</groupId>
+                <groupId>com.pub.format.adapters</groupId>
                 <artifactId>console-adapter</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub.adapter</groupId>
+                <groupId>com.pub.format.adapters</groupId>
                 <artifactId>formatter-adapter</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub</groupId>
+                <groupId>com.pub.format.modules</groupId>
                 <artifactId>config</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub</groupId>
+                <groupId>com.pub.format.modules</groupId>
                 <artifactId>core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub</groupId>
+                <groupId>com.pub.format.modules</groupId>
                 <artifactId>domain</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.pub</groupId>
+                <groupId>com.pub.format.modules</groupId>
                 <artifactId>usecase</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
