@@ -1,13 +1,13 @@
 # Intro
-The below is a description of the choices I made and why for this task. Spring-boot comments are added also.
+The below is a description of the choices I made for the *SmallToolFormatter* task. Spring-boot comments are added also.
 
 Upon reading the task description, I took note of these two statements:
 
 * The application must be written in a way that makes it possible to implement remaining algorithms without any considerable changes to existing code.
 * It is allowed to use junit dependency for tests.
 
-The above statements are like the "alpha" and the "omega", in my mind. Not practicing these principles lead to not
-*Clean Code* and at the end of the day, technical debt.
+The above statements are "alpha and omega", in my opinion. Not practicing these principles lead to not only *Clean Code*,
+but also technical debt, at the end of the day.
 
 So with the above in mind - code that can be unit tested, reused and extended - but also with Spring-boot in mind -
 I have used the *Port Adapter* pattern for the task.
@@ -15,7 +15,7 @@ I have used the *Port Adapter* pattern for the task.
 Yes, it is completely over-kill for the task being, but it illustrates the point.
 
 # Port adapter
-Also called the *Hexagon* pattern. I guess the term is borrowed from DDD i.e. Domain Driven Design, and it was coined around 2008-2011.
+Also called the *Hexagon* pattern. I guess the term is borrowed from DDD i.e. Domain Driven Design, and was coined around 2008-2011.
 
 I was introduced to this pattern by a tech lead person. In the beginning, I didn't like it at all.
 
@@ -30,7 +30,7 @@ Some of my thoughts were:
 * .. etc. etc.
 
 The fact is that I use it now. I recommend this pattern in every larger Spring-boot project - with many developers.
-Why? I would like to explain the pattern.
+Why? I would like to explain.
 
 It consists of these elements (maven modules):
 
@@ -42,8 +42,8 @@ It consists of these elements (maven modules):
 * Use-case (the business logic)
 
 ## Note
-The pattern is called *Port and Adapter*, but actually the "port part" are the interfaces used which are located in
-the domain module. In the following the *Port* is part of the *Domain*.
+The pattern is called *Port and Adapter*, but actually the "port" part are interfaces located in the domain module.
+Thus, in the following, the *Port* is part of the *Domain*.
 
 ## Adapters
 An *Adapter* is an implementation of some resource using raw types and methods from a particular library.
@@ -52,10 +52,10 @@ An *Adapter* is an implementation of some resource using raw types and methods f
 Implementations could be:
 
 * SQL client doing CRUD operations.
-* Apache Kafka client (publishing messages) or listener.
+* Apache Kafka client (publishing messages) or listener (receiving messages).
 * REST client or endpoint.
 
-The resource uses raw types for that implementation in question.
+The resource uses raw types for the implementation in question.
 
 Example types are:
 
@@ -88,7 +88,7 @@ Besides the above, the adapter is oblivious to all other modules in the project.
 ### Important
 Important rules:
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
-* adapters do not know about other adapters or use (inject) other adapters.
+* adapters do not know about other adapters i.e. an adapter must not inject another adapter (the use-case is like the "center").
 
 ## Domain
 The domain consists of the *Types* and *Ports* used in the project.
@@ -96,20 +96,20 @@ The domain consists of the *Types* and *Ports* used in the project.
 ### Types
 This is basically POJO's without any annotations besides (maybe) Lombok.
 
-### Port
-Here the port interfaces reside each implemented by some adapter.
+#### Port
+Here the port interfaces reside - each implemented by some adapter.
 
 ### Dependencies
 The domain modules have no dependencies to other modules.
 
 ### Important
-Rules:
+Rules
 
-* the domain module has no dependency to other maven modules.
+* just to make sure - the domain module has no dependency to other maven modules.
 
 ## Use-case
 The use-case is the business logic. From a dependency point of view, it only knows the domain types and ports, not the
-concrete adapter implementation. It is literately impossible to instantiate a concrete type of some adapter and use it
+concrete adapter implementation. It is literately impossible to instantiate a concrete type, of some adapter, and use it
 in the use case.
 
 ### Dependencies
@@ -125,7 +125,7 @@ Rules:
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
 
 ### Dependencies
-What ever maven dependencies that are needed to instantiate resources.
+Whatever maven dependencies that are needed to instantiate resources.
 
 ### Important
 It only does Dependency Management i.e. instantiation and configuration. E.g. for Spring-boot also security config.
@@ -135,21 +135,21 @@ The *Main* module is responsible for starting the application e.g. like *main* o
 
 ## Conclusion
 The result of using this pattern:
-* decoupled - the use-case and adapters are completely decoupled. It is literately impossible to instantiate a concrete
+* decoupled - the use-case and adapters are completely decoupled. It is impossible to instantiate a concrete
   adapter implementation, thus it is not possible to have raw 3rd part types and library methods mixed with business logic.
   All in all, there is a good chance for *Clean Code*. 
 * unit test (use-case) - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
   focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
   are very simple i.e. configuration details for mocking libraries like e.g. H2 are not bloating the use-case unit test. 
-  And SpringBootTest is not used in this test.
-* unit test (adapter) - this unit test is testing the concrete adapter implementation and which is tight coupled to 3rd part
+  And the @SpringBootTest annotation is not used in this test.
+* unit test (adapter) - this unit test is testing the concrete adapter implementation, which is tight coupled to 3rd part
   library dependencies. And that is fine. And again, test library dependencies can be used in the adapter e.g. H2. But again,
   neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. In other words, the separation is
-  two-fold, both in the production code (abstraction) and thus in the unit test.
+  two-fold, both in the production code (abstraction) and thus (also) in the unit test.
 * overview - it is easy to overview the project since there is a clean distinction between use-case and adapter implementation.
   Especially in projects with many developers commiting to the same project.
 * template - a standard project template can be made with most common modules and adapters e.g. Kafka, Cassandra, Mongodb, SQL etc. etc..
-* standard - it (maybe) makes it easier to communicate and keep the project *clean* (what ever that term is defined as).
+* standard - it (maybe) makes it easier to communicate and keep the project *clean* (whatever the "clean" definition is).
 
 # Questions
 
@@ -191,7 +191,7 @@ And let the toEnum return an optional:
             .findFirst();
     }
 
-I decided not to use Optional, since I see it as an error if the enum is not found. Also, if returning an optional,
+I decided not to use Optional, since I see it as an error, if the enum is not found. Also, if returning an optional,
 the exception thrown, is an interpretation - not the actual cause.
 
 # Console (adapter)
@@ -220,7 +220,7 @@ Before injecting resources into the *AlignFormatter* the code for *LeftAlignForm
         appendToResult(token, result);
 
     } else {
-   ...
+    ...
 
 It could be written as
 
@@ -232,9 +232,9 @@ It could be written as
         appendToResult(token, result);
 
     } else {
-   ...
+    ...
 
-Again, it depends on what people like as standard.
+Again, it depends on what the standard is.
 
 Ps I don't like "and" functions i.e. functions should do one thing and do it well.
 
@@ -247,8 +247,8 @@ formatting functionality. These formatting types are implemented
 * Right
 * Centered
 
-It should be easy to implement "Hard" and "Justified" and if needed a new class can be created implementing the 
-*LineFormatter* interface. Ps as I understand "hard format" it should split the word and "justified formatting" should
+It should be easy to implement "Hard" and "Justified". If needed a new class can be created implementing the 
+*LineFormatter* interface. Ps as I understand "hard format" should split the word and "justified format" should
 keep the word, making the width larger for that particular alignment.
 
 # BeanConfig
@@ -261,48 +261,50 @@ Logging should be done instead of just using *System.out.println* for the except
 I did not have any use for an *id* i.e. I removed it not to have a warning. But when I do need it, I write the type
 as below:
 
-    LEFT_ALIGNED(0, "left", "Left aligned"),
-    RIGHT_ALIGNED(1, "right", "Left aligned"),
-    CENTERED(2, "centered", "Centered");
+    public enum FormatEnum {
+      LEFT_ALIGNED(0, "left", "Left aligned"),
+      RIGHT_ALIGNED(1, "right", "Left aligned"),
+      CENTERED(2, "centered", "Centered");
 
-    final private int id;
-    final private String type;
-    final private String description;
+      final private int id;
+      final private String type;
+      final private String description;
 
-    FormatEnum(int id, String type, String description) {
-        this.id = id;
-        this.type = type;
-        this.description = description;
+      FormatEnum(int id, String type, String description) {
+          this.id = id;
+          this.type = type;
+          this.description = description;
+      }
+
+      public int id() {
+          return id;
+      }
+
+      public String type() {
+          return type;
+      }
+
+      public String description() {
+          return description;
+      }
+
+      public static FormatEnum toEnum(int id) {
+          return Arrays.stream(FormatEnum.values())
+              .filter(x -> x.id() == id)
+              .findFirst().orElseThrow(() ->
+                  new IllegalArgumentException(String.format("Unknown format type. id = %d", id)));
+      }
+
+      public static FormatEnum toEnum(String type) {
+          Objects.requireNonNull(type, "Format type can not be null");
+          return Arrays.stream(FormatEnum.values())
+              .filter(x -> x.type().equalsIgnoreCase(type))
+              .findFirst().orElseThrow(() ->
+                  new IllegalArgumentException(String.format("Unknown format type. type = %s", type)));
+      }
     }
 
-    public int id() {
-        return id;
-    }
-
-    public String type() {
-        return type;
-    }
-
-    public String description() {
-        return description;
-    }
-
-    public static FormatEnum toEnum(int id) {
-        return Arrays.stream(FormatEnum.values())
-            .filter(x -> x.id() == id)
-            .findFirst().orElseThrow(() ->
-                new IllegalArgumentException(String.format("Unknown format type. id = %d", id)));
-    }
-
-    public static FormatEnum toEnum(String type) {
-        Objects.requireNonNull(type, "Format type can not be null");
-        return Arrays.stream(FormatEnum.values())
-            .filter(x -> x.type().equalsIgnoreCase(type))
-            .findFirst().orElseThrow(() ->
-                new IllegalArgumentException(String.format("Unknown format type. type = %s", type)));
-    }
-
-Often the enum type is written to db and instead of a char type I like better to use integer in the db (for more on
+Often the enum type is written to db, and instead of a char type I like better to use integer in the db (for more on
 Hibernate, see below). If the enum is part of db indexing no performance gain would be made, but they seldom are, thus
 a numeric compare is faster than a string compare. As I remember, Mysql and Postgresql supports the enum type - MSSQL,
 DB2 and Oracle doesn't.
@@ -318,28 +320,28 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   of data (if the reference is kept i.e. not null, the gc will not remove). I have experienced this many times in monoliths.
   I have to say, I have made all the mistakes regarding performance and scaling with Hibernate (JPA). And after learning
   about it, I have made analysis and refactored several monoliths with scaling and performance problems.
-* joining tables can be a performance hit on the application. Especially if having many joins and a lot of data. Usually,
-  the problem is that the *business logic* is made during the "read" instead of moving the logic to the "write" side, and
+* joining tables can be a performance hit on the application. Especially if having many joins and querying lots of data. Usually,
+  the problem is that the *business logic* is made during the "read", instead of moving the logic to the "write" side, and
   then expose the result in a *materialized view* with no joins (fast read). It is not a Hibernate problem, it is a design
   problem, but the point is that when using Hibernate, un-experienced developers forget about "Lazy" and "Eager" and do not
   make performance test, and well, suddenly the problem arrives in production. And it starts with business asking for some
-  feature that needs some more data - and then the question "How long will it take?" (on the planning meeting). And the
-  answer might be quite optimistic because "Oh well, we have that e.g. list you're asking about in this particular entity -
-  it will take 1 hour to implement" - and business is happy. Not :-) My point is just - one really have to be careful about
+  feature that needs some more data - and the question "How long will it take?" (on the planning meeting). And the
+  answer might be quite optimistic because "Oh well, we have that e.g. list you're asking about in this particular entity. Hmm, 
+  let me see - it will take 1 hour to implement". And business is happy. Not :-) My point is just - one really have to be careful about
   scaling and performance when working with relational db (also).
-* queries - at some point one end up making native queries anyway i.e. I rather prefer plain old JDBC queries and then
-  using HikariCP.
+* queries - at some point native queries are needed anyway i.e. I rather prefer plain old JDBC queries and then
+  use HikariCP.
 * entities - the entities must not escape into use-case logic, thus they are mapped. Again, I rather just use JDBC queries
-  and then map the result set directly into domain objects, thus no need for entity objects.
-* custom types in entities - some like AttributeConverter for mapping and using custom types in entities, but well, it
+  and then map the result-set directly into domain objects, thus no need for entity objects.
+* custom types in entities - some like AttributeConverter for mapping and using custom types in entities, but it
   can really be a pain when upgrading Spring-boot (i.e. when also upgrading Hibernate).
-  I just prefer, simple (native) types, if used.
+  I just prefer, simple (native) types, if possible.
 * indexing - even Oracle starts to slow down on performance when indexing above 1 million rows.
 
 ## Conclusion
 One really have to be careful with Hibernate and designing relational db, if used. I mean, it is important to make both
 scaling and performance test and not rely on a unit test testing e.g. 3 customers with H2. Relational db and JDBC is great, but
-at some point it is important to look at other alternatives like Mongodb, Cassandra etc.. Many problems can be solved by
+it is also important to be aware of other alternatives like Mongodb, Cassandra etc.. Many problems can be solved by
 moving the business logic from the "read" side to the "write" side (CQRS), but then again, if the legacy system is using
 batches, legacy problems can still exist (instead of using event driven systems). This is where people start to use
 threads in their monoliths to improve performance (been there my self), but it does not solve the real problem.
@@ -368,19 +370,20 @@ And it can quickly become a problem with raw types and library methods used all 
 be a problem sooner or later, since the project will start to be tight coupled with raw library types and methods i.e.
 having dependencies.
 
-If the project is created by 1 developer it can be fine, but usually many developers are working on the same project i.e.
+If the project is created by 1 developer it can be fine, but usually many developers are working on the same project, and
 suddenly there is a high demand for extra communication of extra standards, like "remember not to do this and that".
 Not only does it take time to communicate and describe (maybe in a Developer Guide, that has to be up to date), but also
-it is like a mental overhead or mind-shift. I think it is important to remove unnecessary and mind-shifting,
-since we loose focus on the task at hand i.e. making value for business.
+it is like a mental overhead or mind-shift. I think it is important to remove mind-shifting, if possible, since we loose
+focus on the task at hand i.e. making value for business.
 
 One thing is to keep the production code *clean*. The other thing is to keep the *unit test* clean.
 It is simply mandatory to have clean code, in order to have *clean* unit test.
-I believe that the *Port and Adapter* pattern really help with that problem in larger projects with many team members.
+I believe that the *Port and Adapter* pattern really help with that problem in larger projects. But again, it is possible
+to make a mess in the project if people do not agree on some kind of standard.
 
 ## Unit test
-*SpringBootTest* can be both a wonderful thing, but also be used to test the non-decoupled production code. And when that
-happens, usually it will be the "whole world" that is started in every unit test. The time waste can be seen when running
+The @SpringBootTest annotation can be both a wonderful thing, but also be used to test non-decoupled production code. And when that
+happens, usually it will be the "whole world" that is started in every unit test. The time waste can be seen, when running
 build pipelines.
 
 Below are some unit test examples i.e. the way I make unit tests using Spring-boot.
@@ -410,9 +413,8 @@ Below are some unit test examples i.e. the way I make unit tests using Spring-bo
 
 ### Use-case unit test
 Again, if using the Port and Adapter pattern the unit test will be very simple only using domain model types and port
-interfaces. Only the @Test and @Mockito annotations are used, thus the unit test will be fast. @SpringBootTest will
-not be used in the use-case test.
-
+interfaces. Only the @Test and @Mockito annotations are used, thus the unit test will be simple and fast.
+The @SpringBootTest annotation will not be used in the use-case test.
 
 ### H2 unit test
 In the example below, the SQL adapter class to be tested, is isolated. The inner static main class is running the test.
@@ -456,7 +458,7 @@ imported individually for more performance.
 
 ### Using @TestConfiguration to configure beans
 Sometimes it can be helpful to use the @TestConfiguration annotation to configure beans in the unit test. Again, 
-only the classes needed to be tested are included. The @Import annotation can be used to import classes also.
+only the classes needed to be tested, are included. The @Import annotation can be used to import classes also.
 
     @SpringBootTest(classes = {
     SomeTest.ApplicationTest.class,
