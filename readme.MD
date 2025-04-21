@@ -1,5 +1,5 @@
 # Intro
-The below is a description of the choices I made and why for this task - but also thoughts in general.
+The below is a description of the choices I made and why for this task. Spring-boot comments are added also.
 
 Upon reading the task description, I took note of these two statements:
 
@@ -34,7 +34,7 @@ Why? I would like to explain the pattern.
 
 It consists of these elements (maven modules):
 
-* Port (interfaces)
+* Port (adapter interfaces)
 * Adapters (raw implementation)
 * Domain (model i.e. POJO's and interfaces)
 * Core (SpringBoot application startup)
@@ -103,7 +103,8 @@ Here the port interfaces reside each implemented by some adapter.
 The domain modules have no dependencies to other modules.
 
 ### Important
-And again, an important rule for the domain module is:
+Rules:
+
 * the domain module has no dependency to other maven modules.
 
 ## Use-case
@@ -115,7 +116,8 @@ in the use case.
 * domain model (and port interfaces)
  
 ### Important
-In other words, these rules are very important for the use-case module:
+Rules:
+
 * only uses domain types (not raw 3rd part library types or methods).
 * only uses port interfaces (not a concrete implementation of an adapter).
 
@@ -161,7 +163,7 @@ Where
     0d = line break chr(10) i.e. \r
     0a = new line chr(13) i.e \n
 
-I have chosen to ignore this since I can't figure out any other logic/pattern around it.
+I have chosen to ignore this, but would like to discuss it.
 
 # ArgumentParser (adapter)
 
@@ -189,19 +191,24 @@ And let the toEnum return an optional:
             .findFirst();
     }
 
-I decided not to use Optional, since I see it as an error if the enum is not found.
-Also, if returning an optional, the exception thrown, is an interpretation - not the actual cause.
+I decided not to use Optional, since I see it as an error if the enum is not found. Also, if returning an optional,
+the exception thrown, is an interpretation - not the actual cause.
 
 # Console (adapter)
-Both the *ConsoleInputReader* and the *ConsoleOutputWriter* are tightly coupled i.e. making the Scanner resource and using println respectively.
+The *ConsoleInputReader* is tightly coupled with 
+
+    Scanner scanner = new Scanner(System.in);
+
+Also, the *ConsoleOutputWriter* is tightly coupled using
+
+    System.out.println(output);
+
+If making unit test of these adapters, they could be decoupled also.
 
 # Formatter adapter
-In the beginning I had 2 classes for left and right formatting, but the loop is basically doing the same thing regardless
-the type of formatting. Thus, I decided to just have one class i.e. one loop in all - and then injecting resources depending
-on the type of format.
 
 ## Note on describing operators
-It can sometimes be easier to read code like that. As an example, the LeftAlignFormatter was like the below:
+Before injecting resources into the *AlignFormatter* the code for *LeftAlignFormatter* looked like this e.g.
 
      if (len >= width) {
         if (!alignment.isEmpty()) {
@@ -215,7 +222,7 @@ It can sometimes be easier to read code like that. As an example, the LeftAlignF
     } else {
    ...
 
-, which could be written as:
+It could be written as
 
     if (isTokenGreaterThanOrEqualWidth(len, width)) {
         if (isAlignmentNotEmpty(alignment)) {
@@ -228,6 +235,21 @@ It can sometimes be easier to read code like that. As an example, the LeftAlignF
    ...
 
 Again, it depends on what people like as standard.
+
+Ps I don't like "and" functions i.e. functions should do one thing and do it well.
+
+## Injecting resources
+After making the "left" and "right", I could see that the loop (now in AlignFormatter) basically did the same thing
+regardless the type of formatting i.e. I decided to make it general thus injecting resources based on the type of
+formatting functionality. These formatting types are implemented
+
+* Left
+* Right
+* Centered
+
+It should be easy to implement "Hard" and "Justified" and if needed a new class can be created implementing the 
+*LineFormatter* interface. Ps as I understand "hard format" it should split the word and "justified formatting" should
+keep the word, making the width larger for that particular alignment.
 
 # BeanConfig
 This class can be seen as Spring-boot config class setting up @Beans for dependency management.
@@ -281,24 +303,55 @@ as below:
     }
 
 Often the enum type is written to db and instead of a char type I like better to use integer in the db (for more on
-Hibernate, see below).
+Hibernate, see below). If the enum is part of db indexing no performance gain would be made, but they seldom are, thus
+a numeric compare is faster than a string compare. As I remember, Mysql and Postgresql supports the enum type - MSSQL,
+DB2 and Oracle doesn't.
 
 # Hibernate
-My comment on Hibernate.
-AttributeConverter... Spring-boot upgrade. Unpleasant surprises upon upgrade from e.g. 2.x.x to 3.x.x.
+My comment on Hibernate. Many people like Hibernate and I agree to some extent. 
 
-Have the extra mapping of the entity to domain model.
+## Pros
+* it is really fast for prototyping (but then my "praise" stops).
+ 
+## Cons
+* Hibernate is making a lot of objects, and it can be a problem for the garbage collector if reading a lot
+  of data (if the reference is kept i.e. not null, the gc will not remove). I have experienced this many times in monoliths.
+  I have to say, I have made all the mistakes regarding performance and scaling with Hibernate (JPA). And after learning
+  about it, I have made analysis and refactored several monoliths with scaling and performance problems.
+* joining tables can be a performance hit on the application. Especially if having many joins and a lot of data. Usually,
+  the problem is that the *business logic* is made during the "read" instead of moving the logic to the "write" side, and
+  then expose the result in a *materialized view* with no joins (fast read). It is not a Hibernate problem, it is a design
+  problem, but the point is that when using Hibernate, un-experienced developers forget about "Lazy" and "Eager" and do not
+  make performance test, and well, suddenly the problem arrives in production. And it starts with business asking for some
+  feature that needs some more data - and then the question "How long will it take?" (on the planning meeting). And the
+  answer might be quite optimistic because "Oh well, we have that e.g. list you're asking about in this particular entity -
+  it will take 1 hour to implement" - and business is happy. Not :-) My point is just - one really have to be careful about
+  scaling and performance when working with relational db (also).
+* queries - at some point one end up making native queries anyway i.e. I rather prefer plain old JDBC queries and then
+  using HikariCP.
+* entities - the entities must not escape into use-case logic, thus they are mapped. Again, I rather just use JDBC queries
+  and then map the result set directly into domain objects, thus no need for entity objects.
+* custom types in entities - some like AttributeConverter for mapping and using custom types in entities, but well, it
+  can really be a pain when upgrading Spring-boot (i.e. when also upgrading Hibernate).
+  I just prefer, simple (native) types, if used.
+* indexing - even Oracle starts to slow down on performance when indexing above 1 million rows.
 
-Exclusion
+## Conclusion
+One really have to be careful with Hibernate and designing relational db, if used. I mean, it is important to make both
+scaling and performance test and not rely on a unit test testing e.g. 3 customers with H2. Relational db and JDBC is great, but
+at some point it is important to look at other alternatives like Mongodb, Cassandra etc.. Many problems can be solved by
+moving the business logic from the "read" side to the "write" side (CQRS), but then again, if the legacy system is using
+batches, legacy problems can still exist (instead of using event driven systems). This is where people start to use
+threads in their monoliths to improve performance (been there my self), but it does not solve the real problem.
 
 # Warnings
-I think it is important to remove compile and build warnings. I see it as technical debt. It is just waste of time
-constantly confirming that some warning should be ignored - which actually is wrong.
-
-
+In my opinion, it is important to remove compile and build warnings. I see it as technical debt. It is just waste of time
+constantly confirming that some warning should be ignored - which actually is wrong. It is something that should be fixed.
 
 # Spring-boot
-## Intro
+Just some comments on Spring-boot and unit testing with Spring-boot.
+
+## Port and Adapter
 Spring-boot projects (microservice) quickly take in a lot of dependencies like:
 
 * OpenAPI
@@ -309,19 +362,142 @@ Spring-boot projects (microservice) quickly take in a lot of dependencies like:
 * Hibernate
 * JDBC
 * HikariCP
+* Oracle, MSSQL, DB2 etc.
 
 And it can quickly become a problem with raw types and library methods used all over the place. It will, most likely,
 be a problem sooner or later, since the project will start to be tight coupled with raw library types and methods i.e.
 having dependencies.
+
 If the project is created by 1 developer it can be fine, but usually many developers are working on the same project i.e.
-suddenly there is a high demand for extra communication of extra standards, like "remember not to do like this and that".
-Not only does it take time to communicate and describe (maybe in a Developer Guide), but also it is like a mental overhead
-or mind-shift. I think it is important to remove unnecessary and mind-shifting, since we loose focus on the task at hand.
+suddenly there is a high demand for extra communication of extra standards, like "remember not to do this and that".
+Not only does it take time to communicate and describe (maybe in a Developer Guide, that has to be up to date), but also
+it is like a mental overhead or mind-shift. I think it is important to remove unnecessary and mind-shifting,
+since we loose focus on the task at hand i.e. making value for business.
+
+One thing is to keep the production code *clean*. The other thing is to keep the *unit test* clean.
+It is simply mandatory to have clean code, in order to have *clean* unit test.
+I believe that the *Port and Adapter* pattern really help with that problem in larger projects with many team members.
 
 ## Unit test
+*SpringBootTest* can be both a wonderful thing, but also be used to test the non-decoupled production code. And when that
+happens, usually it will be the "whole world" that is started in every unit test. The time waste can be seen when running
+build pipelines.
+
+Below are some unit test examples i.e. the way I make unit tests using Spring-boot.
+
+### REST Controller unit test
+
+    @AutoConfigureMockMvc
+    @ContextConfiguration(classes = {RestControllerTest.class})
+    @WebMvcTest
+    public class RestControllerTest {
+
+      @MockBean
+      private BusinessInterfaceToMock businessInterfaceToMock;
+
+      private final MockMvc;
+
+      @Test
+      public void test() {
+
+          Mockito.when(.. on the businessInterfaceToMock..);
+
+          mockMvc.perform
+            .. and then
+            .andExpect(..)
+      }
+    }
+
+### Use-case unit test
+Again, if using the Port and Adapter pattern the unit test will be very simple only using domain model types and port
+interfaces. Only the @Test and @Mockito annotations are used, thus the unit test will be very fast. @SpringBootTest will
+not be used in the use-case test.
 
 
+### H2 unit test
+In the example below, the SQL adapter class to be tested, is isolated. The inner static main class is running the test.
+The @TestPropertySource annotation is used to bring in H2 properties. The @DataJpaTest annotation, which does not scan
+@Service and @Component classes, could also be used.
 
+    @SpringBootTest(classes = {SomeRepositoryTest.ApplicationTest.class})
+    @TestPropertySource(
+    properties = {
+      "spring.flyway.enabled=false",
+      "spring.datasource.driver-class-name=org.h2.Driver",
+      "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
+      "spring.datasource.url=jdbc:h2:mem:db;DB_CLOSE_DELAY=-1",
+      "spring.datasource.username=sa",
+      "spring.datasource.password=sa",
+      "spring.jpa.hibernate.ddl-auto=create-drop"
+      }
+    )
+    public class SomeRepositoryTest {
+
+      @Autowired
+      private SomeRepositoryInterface someRepositoryInterface;
+
+      @Test
+      public void test() {
+      .. the test
+      }
+
+      @SpringBootApplication(scanBasePackages = "path to repository with entities")
+      @EnableJpaRepositories("path to repository with entities")
+      @EntityScan("maybe path to your model")
+      public static class ApplicationTest {
+        public static void main(String[] args) {
+          SpringApplication.run(ApplicationTest.class, args);
+        }
+      }
+    }
+
+Since the above test only instantiates objects needed, the test becomes very fast. Ps each entity class could also be
+imported for more performance.
+
+### Using @TestConfiguration to configure @Bean(s)
+Sometimes it can be helpful to use the @TestConfiguration annotation to configure beans in the unit test. Again, 
+only the classes needed to be tested are included. The @Import annotation can be used to import classes also.
+
+    @SpringBootTest(classes = {
+    SomeTest.ApplicationTest.class,
+    SomeTest.SomeTestConfig.class})
+    public class SomeTest {
+
+      @Autowired
+      private SomeInterface someInterface;
+
+      @Test
+      public void test() {
+      .. some test on the mocked interface
+      }
+
+
+      @TestConfiguration
+      public static class SomeTestConfig {
+
+        @Bean
+        public SomeInterface someInterface() {
+          return new SomeInterefaceImplementation();
+        }
+      }
+
+      @SpringBootApplication
+      public static class ApplicationTest {
+        public static void main(String[] args) {
+          SpringApplication.run(ApplicationTest.class, args);
+        }
+      }
+    }
+
+# Dependency Injection and Lombok
+In most cases Lombok can be used. It can give some issues when extending classes, but I rarely extend classes - it is
+just better to inject resources. Anyway, it becomes like this
+
+    @RequiredArgsConstructor
+    public class SomeClass {
+      final SomeInterface someInterface;
+
+Ps the @NonNull (lombok) annotation can also be used.
 
 # Requirements
 Install these dependencies
