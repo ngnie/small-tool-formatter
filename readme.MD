@@ -410,7 +410,7 @@ Below are some unit test examples i.e. the way I make unit tests using Spring-bo
 
 ### Use-case unit test
 Again, if using the Port and Adapter pattern the unit test will be very simple only using domain model types and port
-interfaces. Only the @Test and @Mockito annotations are used, thus the unit test will be very fast. @SpringBootTest will
+interfaces. Only the @Test and @Mockito annotations are used, thus the unit test will be fast. @SpringBootTest will
 not be used in the use-case test.
 
 
@@ -451,10 +451,10 @@ The @TestPropertySource annotation is used to bring in H2 properties. The @DataJ
       }
     }
 
-Since the above test only instantiates objects needed, the test becomes very fast. Ps each entity class could also be
-imported for more performance.
+Since the above test only instantiates objects that are needed, the test becomes fast. Ps each entity class could also be
+imported individually for more performance.
 
-### Using @TestConfiguration to configure @Bean(s)
+### Using @TestConfiguration to configure beans
 Sometimes it can be helpful to use the @TestConfiguration annotation to configure beans in the unit test. Again, 
 only the classes needed to be tested are included. The @Import annotation can be used to import classes also.
 
@@ -517,7 +517,7 @@ To build the application goto to project root and run
 
 To run the application goto
 
-    ../modules/core
+    ../modules/core/target
 
 And run
 
@@ -534,12 +534,14 @@ Goto project root and run
 
 Set the classpath to
 
-    com.pub.core
+    core
 
 The main class is located in
 
     com.pub.format.modules.core.Main
 
-Set the parameters in "Program arguments" (for parameter options, see "Run" above).
+Set the parameters in "Program arguments" e.g.:
+
+    --type left --width 5
 
 You should now be able to debug the application.
