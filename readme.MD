@@ -335,8 +335,7 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   answer might be quite optimistic because "Oh well, we have that e.g. list you're asking about in this particular entity. Hmm, 
   let me see - it will take 1 hour to implement". And business is happy. My point is just - one really have to be careful about
   scaling and performance when working with relational db (also).
-* queries - at some point native queries are needed anyway i.e. I rather prefer plain old JDBC queries and then
-  use HikariCP.
+* queries - at some point native queries are needed anyway i.e. I rather prefer plain old JDBC queries with use of HikariCP.
 * entities - the entities must not escape into use-case logic, thus they are mapped. Again, I rather just use JDBC queries
   and then map the result-set directly into domain objects, avoiding entity objects all together.
 * custom types in entities - some like AttributeConverter for mapping and using custom types in entities, but it
