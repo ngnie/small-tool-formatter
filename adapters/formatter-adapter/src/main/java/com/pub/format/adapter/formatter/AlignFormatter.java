@@ -29,7 +29,6 @@ public class AlignFormatter implements LineFormatter {
 
     @Override
     public String format(String input) {
-        //String[] tokens = input.split("\\s+");
         StringBuilder result = new StringBuilder();
         StringBuilder alignment = new StringBuilder();
 
@@ -40,45 +39,33 @@ public class AlignFormatter implements LineFormatter {
 
             if (len >= width) {
                 if (!alignment.isEmpty()) {
-                    //align(alignment, width - alignment.length());
                     aligner.align(alignment, width - alignment.length());
-                    //appendToResult(alignment, result);
                     resultAdder.add(alignment, result);
                     clear(alignment);
                 }
 
-                //appendToResult(token, result);
                 resultAdder.add(token, result);
 
             } else {
                 if (alignment.length() + len < width) {
                     if (alignment.isEmpty()) {
-                        //alignment.append(token);
                         tokenAdder.add(alignment, token);
                     } else {
-                        //align(alignment, 1);
                         aligner.align(alignment, 1);
-                        //alignment.append(token);
                         tokenAdder.add(alignment, token);
                     }
                 } else {
-                    //align(alignment, width - alignment.length());
                     aligner.align(alignment, width - alignment.length());
-                    //appendToResult(alignment, result);
                     resultAdder.add(alignment, result);
                     clear(alignment);
-                    //alignment.append(token);
                     tokenAdder.add(alignment, token);
                 }
             }
         }
 
-        //align(alignment, width - alignment.length());
         aligner.align(alignment, width - alignment.length());
-        //appendToResult(alignment, result);
         resultAdder.add(alignment, result);
 
-        //removeLastNewline(result);
         newLineRemover.remove(result);
 
         return result.toString();
@@ -87,26 +74,4 @@ public class AlignFormatter implements LineFormatter {
     private void clear(StringBuilder sb) {
         sb.setLength(0);
     }
-
-    /*private void removeLastNewline(StringBuilder sb) {
-        if (!sb.isEmpty()) {
-            sb.deleteCharAt(sb.length()-1);
-        }
-    }*/
-
-    /*private void appendToResult(StringBuilder left, StringBuilder result) {
-        if (!left.isEmpty()) {
-            result.append(left).append("\n");
-        }
-    }
-
-    private void appendToResult(String left, StringBuilder result) {
-        appendToResult(new StringBuilder(left), result);
-    }*/
-
-    /*private void align(StringBuilder sb, int number) {
-        if (!sb.isEmpty()) {
-            sb.append(" ".repeat(Math.max(0, number)));
-        }
-    }*/
 }

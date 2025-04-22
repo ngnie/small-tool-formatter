@@ -529,7 +529,7 @@ To run the application goto
 
 And run
 
-    java -jar format.jar --help
+    java -jar format-jar-with-dependencies.jar --help
 
 You will then get more detailed help.
 

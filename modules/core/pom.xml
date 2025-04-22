@@ -43,7 +43,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>format</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -53,7 +52,8 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>format</finalName>
+                    <appendAssemblyId>true</appendAssemblyId>
                 </configuration>
             </plugin>
         </plugins>
