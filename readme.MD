@@ -89,7 +89,7 @@ Besides the above, the adapter is oblivious to all other modules in the project.
 Important rules:
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
 * adapters do not know about other adapters i.e. an adapter must not inject another adapter (the use-case is like the "center").
-* raw adapter types does *not* escape the adapter (they're mapping into domain types).
+* raw adapter types does *not* escape the adapter (they're mapped into domain types).
  
 ## Domain
 The domain consists of the *Types* and *Ports* used in the project.
@@ -382,8 +382,8 @@ Not only does it take time to communicate and describe (maybe in a Developer Gui
 the consequence is mind-shifting. I think it is important to remove mind-shifting, if possible, since we loose focus on
 the task at hand i.e. making value for business.
 
-One thing is to keep the production code *clean*. The other thing is to keep the *unit test* clean.
-It is simply mandatory to have clean code, in order to have a *clean unit test*.
+One thing is to keep the production code clean. The other thing is to keep the unit test clean.
+It is simply mandatory to have clean code, in order to have *clean unit test code*.
 I believe that the *Port and Adapter* pattern can help with that in larger projects. But again, it is possible
 to make a mess in the project, if people do not agree on some kind of standard.
 
