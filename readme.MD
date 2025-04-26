@@ -502,7 +502,7 @@ just better to inject resources. Anyway, it becomes like this
 
     @RequiredArgsConstructor
     public class SomeClass {
-      final SomeInterface someInterface;
+      final private SomeInterface someInterface;
 
 Ps the @NonNull (lombok) annotation can also be used.
 
