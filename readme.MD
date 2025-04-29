@@ -45,7 +45,7 @@ It consists of these elements (maven modules):
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ### Note
-The pattern is called *Port and Adapter*, but actually the "port" part are interfaces, located in the domain module.
+The pattern is called *Port and Adapter*, but actually the *port part* **are** the interfaces, located in the domain module.
 Thus, in the following, the *Port* is part of the *Domain*.
 
 ## Adapters
