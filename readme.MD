@@ -1,6 +1,8 @@
 # Intro
 The below is a description of the choices I made for the *SmallToolFormatter* task. Spring-boot comments are added also.
 
+![Port Adapter Example](/etc/images/port-adapter.png)
+
 Upon reading the task description, I took note of these two statements:
 
 * The application must be written in a way that makes it possible to implement remaining algorithms without any considerable changes to existing code.
