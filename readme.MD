@@ -1,8 +1,6 @@
 # Intro
 The below is a description of the choices I made for the *SmallToolFormatter* task. Spring-boot comments are added also.
 
-![Port Adapter Example](/etc/images/port-adapter.png)
-
 Upon reading the task description, I took note of these two statements:
 
 * The application must be written in a way that makes it possible to implement remaining algorithms without any considerable changes to existing code.
@@ -42,6 +40,9 @@ It consists of these elements (maven modules):
 * Core (SpringBoot application startup)
 * Config (Beans, properties etc.)
 * Use-case (the business logic)
+
+## An example
+![Port Adapter Example](/etc/images/port-adapter.png)
 
 ## Note
 The pattern is called *Port and Adapter*, but actually the "port" part are interfaces, located in the domain module.
