@@ -42,7 +42,7 @@ It consists of these elements (maven modules):
 * Use-case (the business logic)
 
 ## An example
-![Port Adapter Example](/etc/images/port-adapter.png)
+![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ## Note
 The pattern is called *Port and Adapter*, but actually the "port" part are interfaces, located in the domain module.
