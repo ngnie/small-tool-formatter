@@ -88,25 +88,23 @@ The adapter only has two Maven dependencies:
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
-
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
-* adapters do not know about other adapters i.e. an adapter must not inject another adapter (the use-case is like the "center").
+* adapters do not know about other adapters i.e. an adapter must not inject another adapter. The use-case is like the *center* (or *star*).
 * raw adapter types does *not* escape the adapter (they're mapped into domain types).
  
 ## Domain
-The domain consists of the *Types* and *Ports* used in the project.
+The domain consists of the model i.e. *Types* and *Ports* used in the project.
 
 ### Model (types)
 This is basically POJO's without any annotations besides (maybe) Lombok.
 
-#### Port
+### Port
 Here the port interfaces reside - each implemented by some adapter.
 
 ### Dependencies
 The domain module have no dependencies to other modules.
 
 ### Rules
-
 * the domain module has no dependency to other maven modules.
 * the port interface *is* the decouple mechanism between the use-case and the adapter.
 
@@ -119,9 +117,8 @@ in the use case.
 * domain model (and port interfaces)
  
 ### Rules
-
-* the use-case only uses domain types i.e. not raw 3rd part library types or methods.
-* the use-case only uses port interfaces i.e. not a concrete implementation of an adapter.
+* the use-case only uses domain types i.e. **not** raw 3rd part library types or methods.
+* the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
 
 ## Config
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
