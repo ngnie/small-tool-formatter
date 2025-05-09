@@ -45,7 +45,7 @@ It consists of these elements (maven modules):
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ### Note
-The *port part* are the interfaces, which are located in the domain module.
+The port *part* are the interfaces, which are located in the domain module.
 
 ## Adapters
 An *Adapter* is an implementation of some resource, using raw types and methods from a particular library.
@@ -83,13 +83,13 @@ Raw adapter types does **not** escape the adapter.
 The adapter only has two Maven dependencies:
 
 * the library used for that particular adapter e.g. Apache Kafka.
-* the domain model.
+* the domain i.e. the model (types) and the port.
 
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
-* adapters do not know about other adapters i.e. an adapter must **not** inject another adapter. The use-case is like the *center* (or *star*).
+* adapters do **not** know about other adapters i.e. an adapter must not inject another adapter. The use-case is like the *center* (or *star*).
 * raw adapter types does *not* escape the adapter (they're mapped into domain types).
  
 ## Domain
@@ -117,7 +117,7 @@ in the use case.
 * the domain i.e. the model (types) and port interfaces.
  
 ### Rules
-* the use-case only uses domain types i.e. **not** raw 3rd part library types or methods.
+* the use-case only uses the domain model (types) i.e. **not** raw 3rd part library types or methods.
 * the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
 
 ## Config
