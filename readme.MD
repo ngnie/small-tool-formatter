@@ -139,21 +139,21 @@ The *Core* module is responsible for starting the application e.g. like *main* o
 
 ## Conclusion
 The result of using this pattern:
-* decoupled - the use-case and adapters are completely decoupled through the port interface. Also, it is impossible to
+* **decoupled** - the use-case and adapters are completely decoupled through the port interface. Also, it is impossible to
   instantiate a concrete adapter implementation, thus it is not possible to have raw 3rd part types and library methods
   mixed with business logic. All in all, there is a good chance for *Clean Code*. 
-* unit test (use-case) - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
+* **unit test (use-case)** - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
   focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
   are very simple i.e. configuration details for mocking libraries like e.g. H2 are not bloating the use-case unit test. 
   And the @SpringBootTest annotation is not used in this test, thus the use-case test also becomes fast.
-* unit test (adapter) - this unit test is testing the concrete adapter implementation, which is tight coupled to 3rd part
+* **unit test (adapter)** - this unit test is testing the concrete adapter implementation, which is tight coupled to 3rd part
   library dependencies. And that is fine. And again, test library dependencies can be used in the adapter e.g. H2. But again,
   neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. In other words, the separation is
   two-fold, both in the production code (abstraction) and thus (also) in the unit test.
-* overview - it is easy to overview the project since there is a clean distinction between use-case and adapter implementation.
+* **overview** - it is easy to overview the project since there is a clean distinction between use-case and adapter implementation.
   Especially in projects with many developers commiting to the same project.
-* template - a standard project template can be made with most common modules and adapters e.g. Kafka, Cassandra, Mongodb, SQL etc. etc..
-* standard - it could (maybe) be easier to communicate and keep the project *clean* (whatever the "clean" definition is).
+* **template** - a standard project template can be made with most common modules and adapters e.g. Kafka, Cassandra, Mongodb, SQL etc. etc..
+* **standard** - it could (maybe) be easier to communicate and keep the project *clean* (whatever the "clean" definition is).
 
 # Questions
 
