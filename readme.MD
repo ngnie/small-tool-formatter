@@ -6,10 +6,10 @@ Upon reading the task description, I took note of these two statements:
 * The application must be written in a way that makes it possible to implement remaining algorithms without any considerable changes to existing code.
 * It is allowed to use junit dependency for tests.
 
-The above statements are "alpha and omega", in my opinion. Not practicing these principles lead to *Not Clean Code*,
-but also technical debt, at the end of the day.
+The above statements are "alpha and omega", in my opinion. Not practicing these principles lead to *Not Clean Code* - and
+thus, most likely, technical debt.
 
-So with the above in mind - code that can be unit tested, reused and extended - but also with Spring-boot in mind -
+So with the above in mind i.e. code that can be unit tested, reused and extended - but also with Spring-boot in mind -
 I have used the *Port Adapter* pattern for the task.
 
 Yes, it is completely over-kill for the task being, but it illustrates the point.
@@ -22,7 +22,7 @@ I was introduced to this pattern by a tech lead person. In the beginning, I didn
 Some of my thoughts were:
 
 * Oh well, I know perfectly well how to decouple.
-* I know how to use an interface. What have we? Strategy, visitor, delegator etc.
+* I know how to use an interface. What have we? Strategy, Visitor, Delegator etc.
 * And yes, I know SOLID, principles, patterns and best practice.
 * I know how to do unit test.
 * It is waste of time with all these bloated adapters i.e. maven modules. It is confusing.
@@ -87,8 +87,8 @@ The adapter only has two Maven dependencies:
 
 Besides the above, the adapter is oblivious to all other modules in the project.
 
-### Important
-Important rules:
+### Rules
+
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
 * adapters do not know about other adapters i.e. an adapter must not inject another adapter (the use-case is like the "center").
 * raw adapter types does *not* escape the adapter (they're mapped into domain types).
@@ -96,19 +96,18 @@ Important rules:
 ## Domain
 The domain consists of the *Types* and *Ports* used in the project.
 
-### Types
+### Model (types)
 This is basically POJO's without any annotations besides (maybe) Lombok.
 
 #### Port
 Here the port interfaces reside - each implemented by some adapter.
 
 ### Dependencies
-The domain modules have no dependencies to other modules.
+The domain module have no dependencies to other modules.
 
-### Important
-Rules
+### Rules
 
-* just to make sure - the domain module has no dependency to other maven modules.
+* the domain module has no dependency to other maven modules.
 * the port interface *is* the decouple mechanism between the use-case and the adapter.
 
 ## Use-case
@@ -119,11 +118,10 @@ in the use case.
 ### Dependencies
 * domain model (and port interfaces)
  
-### Important
-Rules:
+### Rules
 
-* only uses domain types (not raw 3rd part library types or methods).
-* only uses port interfaces (not a concrete implementation of an adapter).
+* the use-case only uses domain types i.e. not raw 3rd part library types or methods.
+* the use-case only uses port interfaces i.e. not a concrete implementation of an adapter.
 
 ## Config
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
