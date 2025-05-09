@@ -88,9 +88,9 @@ The adapter only has two Maven dependencies:
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
-* adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
+* adapters do **not** know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
 * adapters do **not** know about other adapters i.e. an adapter must not inject another adapter. The use-case is like the *center* (or *star*).
-* raw adapter types does *not* escape the adapter (they're mapped into domain types).
+* raw adapter types does **not** escape the adapter (they're mapped into domain types).
  
 ## Domain
 The domain consists of the model i.e. *Types* and *Ports* used in the project.
@@ -109,7 +109,7 @@ The domain module have no dependencies to other modules.
 * the port interface *is* the decouple mechanism between the use-case and the adapter.
 
 ## Use-case
-The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports, **not** the
+The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the
 concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
 in the use case.
 
@@ -144,7 +144,7 @@ The result of using this pattern:
 * **unit test (adapter)** - this unit test is testing the concrete adapter implementation, which is tight coupled to 3rd part
   library dependencies. And that is fine. And again, test library dependencies can be used in the adapter e.g. H2. But again,
   neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. In other words, the separation is
-  two-fold, both in the production code (abstraction) and thus (also) in the unit test.
+  *two-fold*, both in the production code (abstraction) and thus (also) in the unit test.
 * **overview** - it is easy to overview the project since there is a clean distinction between use-case and adapter implementation.
   Especially in projects with many developers commiting to the same project.
 * **template** - a standard project template can be made with most common modules and adapters e.g. Kafka, Cassandra, Mongodb, SQL etc. etc..
