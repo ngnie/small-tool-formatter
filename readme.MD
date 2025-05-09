@@ -77,7 +77,7 @@ Parameters used in constructors and methods are domain type (or native types).
 
 ### Mapping
 Mappers are located in the adapter. They're able to map between domain types and raw adapter types.
-Raw adapter types does *not* escape the adapter.
+Raw adapter types does **not** escape the adapter.
 
 ### Dependencies
 The adapter only has two Maven dependencies:
@@ -89,7 +89,7 @@ Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
 * adapters do not know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
-* adapters do not know about other adapters i.e. an adapter must not inject another adapter. The use-case is like the *center* (or *star*).
+* adapters do not know about other adapters i.e. an adapter must **not** inject another adapter. The use-case is like the *center* (or *star*).
 * raw adapter types does *not* escape the adapter (they're mapped into domain types).
  
 ## Domain
@@ -109,12 +109,12 @@ The domain module have no dependencies to other modules.
 * the port interface *is* the decouple mechanism between the use-case and the adapter.
 
 ## Use-case
-The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports, not the
-concrete adapter implementation. It is literately impossible to instantiate a concrete type, of some adapter, and use it
+The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports, **not** the
+concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
 in the use case.
 
 ### Dependencies
-* domain model (and port interfaces)
+* the domain i.e. the model (types) and port interfaces.
  
 ### Rules
 * the use-case only uses domain types i.e. **not** raw 3rd part library types or methods.
@@ -135,12 +135,12 @@ The *Core* module is responsible for starting the application e.g. like *main* o
 ## Conclusion
 The result of using this pattern:
 * **decoupled** - the use-case and adapters are completely decoupled through the port interface. Also, it is impossible to
-  instantiate a concrete adapter implementation, thus it is not possible to have raw 3rd part types and library methods
+  instantiate a concrete adapter implementation, thus it is **not** possible to have raw 3rd part types and library methods
   mixed with business logic. All in all, there is a good chance for *Clean Code*. 
 * **unit test (use-case)** - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
   focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
-  are very simple i.e. configuration details for mocking libraries like e.g. H2 are not bloating the use-case unit test. 
-  And the @SpringBootTest annotation is not used in this test, thus the use-case test also becomes fast.
+  are very simple i.e. configuration details for mocking libraries like e.g. H2 are **not** bloating the use-case unit test. 
+  And the @SpringBootTest annotation is **not** used in this test, thus the use-case test also becomes fast.
 * **unit test (adapter)** - this unit test is testing the concrete adapter implementation, which is tight coupled to 3rd part
   library dependencies. And that is fine. And again, test library dependencies can be used in the adapter e.g. H2. But again,
   neither the 3rd part library raw types or methods - nor H2 is mixed with the use-case. In other words, the separation is
