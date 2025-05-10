@@ -34,12 +34,12 @@ Why? I would like to explain.
 
 It consists of these elements (conceptual level):
 
-* Port (adapter interface)
-* Adapters (raw implementation)
-* Domain (model i.e. POJO's and interfaces)
-* Core (SpringBoot application startup)
-* Config (Beans, properties etc.)
-* Use-case (the business logic)
+* Port (adapter interface).
+* Adapters (raw implementation).
+* Domain (model i.e. POJO's and interfaces).
+* Core (SpringBoot application startup).
+* Config (Beans, properties etc.).
+* Use-case (the business logic).
 
 ## An example
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
@@ -48,13 +48,13 @@ It consists of these elements (conceptual level):
 The port *part* are the interfaces, which are located in the domain module (maven) - thus the *maven module* hierarchy become:
 
 * Adapters
-  * adapter modules with their raw implementations
+  * adapter modules with their raw implementations.
 * Domain
-  * Model (i.e. POJO's of some type)
-  * Port (all port interfaces implemented by their adapter respectively)
-* Core (SpringBoot application startup)
-* Config (Beans, properties etc.)
-* Use-case (the business logic)
+  * Model (i.e. POJO's of some type).
+  * Port (all port interfaces implemented by their adapter respectively).
+* Core (SpringBoot application startup).
+* Config (Beans, properties etc.).
+* Use-case (the business logic).
 
 Ps in the following *domain type* and *domain model type* is used interchangeably.
 
