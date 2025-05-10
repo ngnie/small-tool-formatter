@@ -48,7 +48,7 @@ It consists of these elements (conceptual level):
 The port *part* are the interfaces, which are located in the domain module (maven) - thus the *maven module* hierarchy become:
 
 * Adapters
-  * adapter modules with their raw implementations.
+  * Adapter modules with their raw implementations.
 * Domain
   * Model (i.e. POJO's of some type).
   * Port (all port interfaces implemented by their adapter respectively).
