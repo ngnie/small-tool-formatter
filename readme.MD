@@ -51,7 +51,7 @@ The port *part* are the interfaces, which are located in the domain maven module
   * Adapter maven modules with their raw implementations.
 * Domain
   * Model (i.e. POJO's of some type).
-  * Port (all port interfaces implemented by their adapter respectively).
+  * Port (all port interfaces implemented by their adapters respectively).
 * Core (SpringBoot application startup).
 * Config (Beans, properties etc.).
 * Use-case (the business logic).
