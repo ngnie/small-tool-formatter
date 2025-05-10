@@ -45,7 +45,7 @@ It consists of these elements (conceptual level):
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ### Note
-The port *part* are the interfaces, which are located in the domain module - thus the *maven module* hierarchy become:
+The port *part* are the interfaces, which are located in the domain maven module - thus the *maven module* hierarchy become:
 
 * Adapters
   * Adapter maven modules with their raw implementations.
