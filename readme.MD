@@ -56,7 +56,7 @@ The port *part* are the interfaces, which are located in the domain maven module
 * Config (Beans, properties etc.).
 * Use-case (the business logic).
 
-Ps in the following *domain type* and *domain model type* is used interchangeably.
+Ps in the following *domain type* and *domain model type* are used interchangeably.
 
 ## Adapters
 An *Adapter* is an implementation of some resource, using raw types and methods from a particular library.
