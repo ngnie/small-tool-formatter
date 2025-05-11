@@ -137,7 +137,7 @@ The *Config* module configures the dependency management i.e. bean instantiation
 Whatever maven dependencies that are needed to instantiate resources.
 
 ### Rules
-It only bring in properties and dependency management i.e. for Spring-boot it would be @Bean instantiation and configuration including security config etc..
+It only bring in properties and handles dependency management i.e. for Spring-boot it would be @Bean instantiation and configuration including security config etc..
 
 ## Core
 The *Core* module is responsible for starting the application e.g. like *main* or *SpringBootApplication*.
