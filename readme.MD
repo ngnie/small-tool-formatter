@@ -48,10 +48,10 @@ It consists of these elements (conceptual level):
 The port *part* are the interfaces, which are located in the domain maven module - thus the *maven modules* become:
 
 * Adapter
-  * N adapter maven modules with their raw implementations (located in the *adapter* package).
-* Domain - 1 maven module with model (i.e. POJO's of some type) and all port interfaces implemented by their adapters respectively.
+  * N maven modules, each with a particular raw adapter implementation (located in the *adapter* package).
+* Domain - 1 maven module with the domain model (i.e. POJO's of some type) and all port interfaces, each implemented by their adapters, respectively.
 * Core - 1 maven module with SpringBoot application startup.
-* Config - 1 maven modules bringing in properties, @Beans instantiation and security etc..
+* Config - 1 maven module bringing in properties, @Beans instantiation and security etc..
 * Use-case - 1 maven module with all the use-cases i.e. the business logic.
 
 Ps in the following *domain type* and *domain model type* are used interchangeably.
