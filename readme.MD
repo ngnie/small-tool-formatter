@@ -32,6 +32,7 @@ Some of my thoughts were:
 The fact is that I use it now. I recommend this pattern in every larger Spring-boot project - with many developers.
 Why? I would like to explain.
 
+## Elements
 From a conceptual level, the pattern consists of these elements:
 
 * Port (adapter interface).
