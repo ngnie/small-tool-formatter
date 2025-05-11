@@ -41,11 +41,8 @@ It consists of these elements (conceptual level):
 * Config (Beans, properties etc.).
 * Use-case (the business logic).
 
-## An example
-![Port Adapter Example](/etc/doc/images/port-adapter.png)
-
-### Note
-The port *part* are the interfaces, which are located in the domain maven module - thus the *maven modules* become:
+## Maven modules
+The port *part* are the interfaces, which are located in the *domain* maven module - thus the *maven modules* become:
 
 * Adapter
   * N maven modules, each with a particular raw adapter implementation (located in the *adapter* package).
@@ -55,6 +52,9 @@ The port *part* are the interfaces, which are located in the domain maven module
 * Use-case - 1 maven module with all the use-cases i.e. the business logic.
 
 Ps in the following *domain type* and *domain model type* are used interchangeably.
+
+## An example
+![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ## Adapters
 An *Adapter* is an implementation of some resource, using raw types and methods from a particular library.
