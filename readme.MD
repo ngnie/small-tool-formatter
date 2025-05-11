@@ -45,16 +45,14 @@ It consists of these elements (conceptual level):
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
 ### Note
-The port *part* are the interfaces, which are located in the domain maven module - thus the *maven module* hierarchy become:
+The port *part* are the interfaces, which are located in the domain maven module - thus the *maven modules* become:
 
-* Adapters
-  * Adapter maven modules with their raw implementations.
-* Domain
-  * Model (i.e. POJO's of some type).
-  * Port (all port interfaces implemented by their adapters respectively).
-* Core (SpringBoot application startup).
-* Config (Beans, properties etc.).
-* Use-case (the business logic).
+* Adapter
+  * N adapter maven modules with their raw implementations (located in the *adapter* package).
+* Domain - 1 maven module with model (i.e. POJO's of some type) and all port interfaces implemented by their adapters respectively.
+* Core - 1 maven module with SpringBoot application startup.
+* Config - 1 maven modules bringing in properties, @Beans instantiation and security etc..
+* Use-case - 1 maven module with all the use-cases i.e. the business logic.
 
 Ps in the following *domain type* and *domain model type* are used interchangeably.
 
