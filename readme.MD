@@ -32,7 +32,7 @@ Some of my thoughts were:
 The fact is that I use it now. I recommend this pattern in every larger Spring-boot project - with many developers.
 Why? I would like to explain.
 
-It consists of these elements (conceptual level):
+From a conceptual level, the pattern consists of these elements:
 
 * Port (adapter interface).
 * Adapters (raw implementation).
@@ -42,7 +42,7 @@ It consists of these elements (conceptual level):
 * Use-case (the business logic).
 
 ## Maven modules
-The port *part* are the interfaces, which are located in the *domain* maven module - thus the *maven modules* become:
+In the below, note that the port *part* i.e. the interfaces, are located in the *domain* maven module - thus the *maven modules* become:
 
 * Adapter
   * N maven modules, each with a particular raw adapter implementation (located in the *adapter* package).
