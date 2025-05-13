@@ -99,7 +99,7 @@ Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
 * adapters do **not** know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
-* adapters do **not** know about other adapters i.e. an adapter must not depend on some other adapter like e.g. inject another adapter. The use-case is located in the Hexagon (like a *center*) and orchestrates the usage of the adapter resources indiviually.
+* adapters do **not** know about other adapters i.e. an adapter must not depend on some other adapter like e.g. inject another adapter.
 * it is the responsibility of the adapter to map between domain -and raw adapter types (3rd part library implementation type). Thus raw adapter types does **not** escape the adapter. They're mapped into domain types, which the adapter knows about (maven dependency). Only the adapter knows about both worlds of types - the adapter and the domain (types).
  
 ## Domain
@@ -129,6 +129,8 @@ in the use case.
 ### Rules
 * the use-case only uses the domain model (types) i.e. **not** raw 3rd part library types or methods.
 * the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
+* the use-case uses adapter resources indiviually i.e. no injection is made.
+* the use-case is located in the Hexagon and can be thought of as a *center* orchestrating the business logic with the usage of adapters for input and output.
 
 ## Config
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
