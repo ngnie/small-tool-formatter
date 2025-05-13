@@ -129,8 +129,8 @@ in the use case.
 ### Rules
 * the use-case only uses the domain model (types) i.e. **not** raw 3rd part library types or methods.
 * the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
-* the use-case uses adapter resources indiviually i.e. no injection is made.
-* the use-case is located in the Hexagon and can be thought of as a *center* orchestrating the business logic with the usage of adapters for input and output.
+* adapter resources are used indiviually by the use-case i.e. no injection is made.
+* the use-case is located in the Hexagon - like a *center*, orchestrating the business logic, with the usage of adapters for input and output.
 
 ## Config
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
