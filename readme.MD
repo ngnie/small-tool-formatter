@@ -186,9 +186,10 @@ The *Core* module is responsible for starting the application e.g. like *main* o
 
 ## Conclusion
 The result of using this pattern:
-* **decoupled** - the use-case and adapters are completely decoupled through the port interface. Also, it is impossible to
+* **decoupled** - the use-case and adapters are completely decoupled through the port -and executor interface. Also, it is impossible to
   instantiate a concrete adapter implementation, thus it is **not** possible to have raw 3rd part types and library methods
-  mixed with business logic. All in all, there is a good chance for *Clean Code*. 
+  mixed with business logic. If using the executor interface, it is impossible to instantiate a concrete use-case implementation from within the adapter.
+  All in all, there is a good chance for *Clean Code*. 
 * **unit test (use-case)** - because of the decoupling, the use-case unit test becomes very simple and clean, since it only
   focuses on business logic and domain types (includes port interfaces). Mocking and stubbing domain types and interfaces
   are very simple i.e. configuration details for mocking libraries like e.g. H2 are **not** bloating the use-case unit test. 
