@@ -77,12 +77,14 @@ Example types are:
 The adapter must implement a *port* interface.
 
 ### Calling
-The adapter can be:
+There are two types of calling, either *outgoing* or *ingoing*.
 
-* called by the initiator e.g. like a *client*.
-* or make a call-back to the initiator e.g. like a *listener*.
+#### Outgoing
+Here the use-case is calling the adapter e.g. like a *client* calling a REST endpoint or publishing a message. The *port interface* is used by the use-case.
 
-Regardless, the type of call, a port interface must be used.
+#### Ingoing
+Here the adapter is calling the use-case e.g. when adapter endpoint is called or message is received. The *executor interface* (see *Use-case* below) is used by the adapter.
+
 Parameters used in constructors and methods are domain type (or native types).
 
 ### Mapping
@@ -98,9 +100,11 @@ The adapter only has two Maven dependencies:
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
-* adapters do **not** know anything about the use-case i.e. the business logic. They are decoupled through the port interface.
+* adapters do **not** know anything about the use-case i.e. the business logic. They are decoupled through the executor interface.
 * adapters do **not** know about other adapters i.e. an adapter must not depend on another adapter like e.g. inject another adapter.
 * it is the responsibility of the adapter to map between domain -and raw adapter types (3rd part library implementation type). Thus raw adapter types does **not** escape the adapter. They're mapped into domain types, which the adapter knows about (maven dependency). Only the adapter knows about both worlds of types - the adapter and the domain (types).
+* the adapter will be called by the port interface, by the use-case, for *outgoing* calls.
+* the use-case will be called by the executor interface, by the adapter, for ingoing calls.
  
 ## Domain
 The domain consists of the model (i.e. *types*) and *ports* used in the project.
@@ -123,6 +127,9 @@ The use-case *is* the business logic. From a dependency point of view, it only k
 concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
 in the use case.
 
+### Execute
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. The Executor interface is part of the domain module. Several executor interfaces can be made including generics. The can be located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations i.e. through the usage of the executor interface. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency.
+
 ### Dependencies
 * the domain i.e. the model (types) and port interfaces.
  
@@ -131,15 +138,28 @@ in the use case.
 * the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
 * adapter resources are used indiviually by the use-case i.e. no injection is made.
 * the use-case is located in the Hexagon - like a *center*, orchestrating the business logic, with the usage of adapters for input and output.
+* the use-case must implement the executor interface.
 
 ## Config
 The *Config* module configures the dependency management i.e. bean instantiation and injection throughout the project.
 
+It is here the use-case and the apdater are decoupled by:
+* injecting the adapter (port interface) into the use-case for outgoing calls.
+* injecting the use-case (executor interface) into the adapter for ingoing calls.
+
+Note that *exclude filters* can be used in the @ComponentScan to avoid scanning of e.g. @RestController. This way @Qualifier on the executor interface is avoided - and thus also the use-case dependency in the adapter.
+
 ### Dependencies
-Whatever maven dependencies that are needed to instantiate resources.
+Basically all except the *core* module i.e. all adapters, use-case and the domain module are needed to instantiate resources.
 
 ### Rules
-It only bring in properties and handles dependency management i.e. for Spring-boot it would be @Bean instantiation and configuration including security config etc..
+Just to keep the "pattern" of rules:
+
+* bring in properties.
+* handles dependency management i.e. for Spring-boot it would be @Configuration class (or classes) of:
+  * @Bean resource instantiation (as mentioned above).
+  * Security config (OAuth 2.0).
+  * etc..
 
 ## Core
 The *Core* module is responsible for starting the application e.g. like *main* or *SpringBootApplication*.
