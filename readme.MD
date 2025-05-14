@@ -100,7 +100,7 @@ The adapter only has two Maven dependencies:
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
-* adapters do **not** know anything about the use-case i.e. the adapter is decoupled from the use-case by using the executor interface.
+* the adapter only uses the executor interface i.e. **not** a concrete implementation of a use-case. Thus, the use-case is decoupled from the adapter.
 * adapters do **not** know about other adapters i.e. an adapter must not depend on another adapter like e.g. inject another adapter.
 * it is the responsibility of the adapter to map between domain -and raw adapter types (3rd part library implementation type). Thus raw adapter types does **not** escape the adapter. They're mapped into domain types, which the adapter knows about (maven dependency). Only the adapter knows about both worlds of types - the adapter and the domain (types).
 * the adapter will be called by the use-case, using the port interface, for *outgoing* calls.
@@ -143,8 +143,7 @@ The domain module have no dependencies to other modules.
 * the port -and executor interface *is* the decouple mechanism between the use-case and the adapter.
 
 ## Use-case
-The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the
-concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
+The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
 in the use case.
 
 ### Execute
@@ -154,9 +153,9 @@ The use-case is implementing the *Executor* interface. This is how the use-case 
 * the domain i.e. the model (types), port -and executor interfaces.
  
 ### Rules
+* the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter. Thus, the adapter is decoupled from the use-case.
 * the use-case only uses the domain model (types) i.e. **not** raw 3rd part library types or methods.
-* the use-case only uses port interfaces i.e. **not** a concrete implementation of an adapter.
-* adapter resources are used indiviually by the use-case i.e. no injection is made.
+* adapter resources are used indiviually by the use-case i.e. no adapter injection, into another adapter, is made.
 * the use-case is located in the Hexagon - like a *center*, orchestrating the business logic, with the usage of adapters for input and output.
 * the use-case must implement the executor interface.
 
