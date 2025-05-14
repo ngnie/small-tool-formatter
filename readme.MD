@@ -148,7 +148,7 @@ concrete adapter implementation. It is literately impossible to instantiate a co
 in the use case.
 
 ### Execute
-The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case.
 
 ### Dependencies
 * the domain i.e. the model (types) and port interfaces.
