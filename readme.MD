@@ -116,7 +116,7 @@ This is basically POJO's, of some type, without any annotations besides (maybe) 
 Here the port interfaces reside - each implemented by some adapter. The interfaces are located in the *port* package.
 
 ### Executor
-Here the executor interfaces reside - each implemented by some use-case. The interfaces are located in the *executor* package. There will only be one or a few executor interfaces (using generics and record). If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
+Here the executor interfaces reside - each implemented by some use-case. The interfaces are located in the *executor* package.
 
 ### Dependencies
 The domain module have no dependencies to other modules.
@@ -131,7 +131,22 @@ concrete adapter implementation. It is literately impossible to instantiate a co
 in the use case.
 
 ### Execute
-The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. The Executor interface is part of the domain module. A few general executor interfaces are made using generics and record. The are located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency.
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. A few general executor interfaces are made using generics (using domain types). They are located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
+
+#### Examples
+Some examples of executor interfaces could be:
+
+    public interface Executor {
+      void execute();
+    }
+
+    public interface Executor<I> {
+      void execute(I i);
+    }
+
+    public interface Executor<I,O> {
+      O execute(I i);
+    }
 
 ### Dependencies
 * the domain i.e. the model (types) and port interfaces.
