@@ -95,7 +95,7 @@ Raw adapter types does **not** escape the adapter.
 The adapter only has two Maven dependencies:
 
 * the library used for that particular adapter e.g. Apache Kafka.
-* the domain i.e. the model (types) and the port.
+* the domain i.e. the model (types), the port -and executor interfaces.
 
 Besides the above, the adapter is oblivious to all other modules in the project.
 
@@ -107,7 +107,7 @@ Besides the above, the adapter is oblivious to all other modules in the project.
 * the use-case will be called by the adapter, using the executor interface, for *ingoing* calls.
  
 ## Domain
-The domain consists of the model (i.e. *types*) and *ports* used in the project.
+The domain consists of the model (i.e. *types*), *ports* -and *executor* interfaces used in the project.
 
 ### Model
 This is basically POJO's, of some type, without any annotations besides (maybe) Lombok.
@@ -148,10 +148,10 @@ concrete adapter implementation. It is literately impossible to instantiate a co
 in the use case.
 
 ### Execute
-The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case.
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. Again, the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency, in the adapter, is **not** needed - only the domain module dependency.
 
 ### Dependencies
-* the domain i.e. the model (types) and port interfaces.
+* the domain i.e. the model (types), port -and executor interfaces.
  
 ### Rules
 * the use-case only uses the domain model (types) i.e. **not** raw 3rd part library types or methods.
