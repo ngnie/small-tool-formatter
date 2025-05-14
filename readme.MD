@@ -118,21 +118,6 @@ Here the port interfaces reside - each implemented by some adapter. The interfac
 ### Executor
 Here the executor interfaces reside - each implemented by some use-case. The interfaces are located in the *executor* package.
 
-### Dependencies
-The domain module have no dependencies to other modules.
-
-### Rules
-* the domain module has **no** dependency to other maven modules.
-* the port interface *is* the decouple mechanism between the use-case and the adapter.
-
-## Use-case
-The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the
-concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
-in the use case.
-
-### Execute
-The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. A few general executor interfaces are made using generics (using domain types). They are located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
-
 #### Examples
 Some examples of executor interfaces could be:
 
@@ -147,6 +132,23 @@ Some examples of executor interfaces could be:
     public interface Executor<I,O> {
       O execute(I i);
     }
+
+Note that the domain types are used for the *generics*.
+
+### Dependencies
+The domain module have no dependencies to other modules.
+
+### Rules
+* the domain module has **no** dependency to other maven modules.
+* the port interface *is* the decouple mechanism between the use-case and the adapter.
+
+## Use-case
+The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the
+concrete adapter implementation. It is literately impossible to instantiate a concrete implementation (type), of some adapter, and use it
+in the use case.
+
+### Execute
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency. If this flexibility is not wanted, the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
 
 ### Dependencies
 * the domain i.e. the model (types) and port interfaces.
