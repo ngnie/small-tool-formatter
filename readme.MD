@@ -116,7 +116,7 @@ This is basically POJO's, of some type, without any annotations besides (maybe) 
 Here the port interfaces reside - each implemented by some adapter. The interfaces are located in the *port* package.
 
 ### Executor
-Here the executor interfaces reside - each implemented by some use-case. There will only be one or a few executor interfaces (using generics and record). If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, it is recommended to place the executor interface together with the use-case. For more, see Use-case and Config below.
+Here the executor interfaces reside - each implemented by some use-case. The interfaces are located in the *executor* package. There will only be one or a few executor interfaces (using generics and record). If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, the executor interface can be located together with the use-case. For more, see Use-case and Config below.
 
 ### Dependencies
 The domain module have no dependencies to other modules.
