@@ -83,7 +83,7 @@ There are two types of calling, either *outgoing* or *ingoing*.
 Here the use-case is calling the adapter e.g. like a *client* calling a REST endpoint or publishing a message. The *port interface* is used by the use-case.
 
 #### Ingoing
-Here the adapter is calling the use-case e.g. when adapter endpoint is called or message is received. The *executor interface* (see *Use-case* below) is used by the adapter.
+Here the adapter is calling the use-case e.g. when adapter endpoint is called or message is received. The *executor interface* (see *Domain* below) is used by the adapter.
 
 Parameters used in constructors and methods are domain type (or native types).
 
@@ -100,11 +100,11 @@ The adapter only has two Maven dependencies:
 Besides the above, the adapter is oblivious to all other modules in the project.
 
 ### Rules
-* adapters do **not** know anything about the use-case i.e. the business logic. They are decoupled through the executor interface.
+* adapters do **not** know anything about the use-case i.e. the adapter is decoupled from the use-case by using the executor interface.
 * adapters do **not** know about other adapters i.e. an adapter must not depend on another adapter like e.g. inject another adapter.
 * it is the responsibility of the adapter to map between domain -and raw adapter types (3rd part library implementation type). Thus raw adapter types does **not** escape the adapter. They're mapped into domain types, which the adapter knows about (maven dependency). Only the adapter knows about both worlds of types - the adapter and the domain (types).
-* the adapter will be called by the port interface, by the use-case, for *outgoing* calls.
-* the use-case will be called by the executor interface, by the adapter, for ingoing calls.
+* the adapter will be called by the use-case, using the port interface, for *outgoing* calls.
+* the use-case will be called by the adapter, using the executor interface, for *ingoing* calls.
  
 ## Domain
 The domain consists of the model (i.e. *types*) and *ports* used in the project.
@@ -140,7 +140,7 @@ The domain module have no dependencies to other modules.
 
 ### Rules
 * the domain module has **no** dependency to other maven modules.
-* the port interface *is* the decouple mechanism between the use-case and the adapter.
+* the port -and executor interface *is* the decouple mechanism between the use-case and the adapter.
 
 ## Use-case
 The use-case *is* the business logic. From a dependency point of view, it only knows the domain types and ports - **not** the
