@@ -57,7 +57,7 @@ Ps in the following *domain type* and *domain model type* are used interchangeab
 ## An example
 ![Port Adapter Example](/etc/doc/images/port-adapter.png)
 
-In the above drawing, the *port* also illustrates the use-case implementation of the *executor interface* (see below).
+Note that the *port* also illustrates the use-case implementation of the *executor interface* (see below).
 
 ## Adapters
 An *Adapter* is an implementation of some resource, using raw types and methods from a particular library.
