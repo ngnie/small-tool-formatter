@@ -156,13 +156,12 @@ Note that *exclude filters* can be used in the @ComponentScan to avoid scanning 
 Basically all except the *core* module i.e. all adapters, use-case and the domain module are needed to instantiate resources.
 
 ### Rules
-From a Spring-boot perspective:
+From a Spring-boot perspective i.e. @Configuration class (or classes) of:
 
-* bring in properties.
-* handles dependency management i.e.  @Configuration class (or classes) of:
-  * @Bean resource instantiation (as mentioned above).
-  * Security config (OAuth 2.0).
-  * etc..
+* bringing in properties.
+* @Bean resource instantiation (as mentioned above).
+* Security config (OAuth 2.0).
+* etc..
 
 ## Core
 The *Core* module is responsible for starting the application e.g. like *main* or *SpringBootApplication*.
