@@ -113,7 +113,10 @@ The domain consists of the model (i.e. *types*) and *ports* used in the project.
 This is basically POJO's, of some type, without any annotations besides (maybe) Lombok.
 
 ### Port
-Here the port interfaces reside - each implemented by some adapter.
+Here the port interfaces reside - each implemented by some adapter. The interfaces are located in the *port* package.
+
+### Executor
+Here the executor interfaces reside - each implemented by some use-case. There will only be one or a few executor interfaces (using generics and record). If this flexibility is not wanted, then the adapter has to add the use-case maven dependency. And if so, it is recommended to place the executor interface together with the use-case. For more, see Use-case and Config below.
 
 ### Dependencies
 The domain module have no dependencies to other modules.
@@ -128,7 +131,7 @@ concrete adapter implementation. It is literately impossible to instantiate a co
 in the use case.
 
 ### Execute
-The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. The Executor interface is part of the domain module. Several executor interfaces can be made including generics. The can be located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations i.e. through the usage of the executor interface. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency.
+The use-case is implementing the *Executor* interface. This is how the use-case is decoupled from the adapter. The Executor interface is part of the domain module. A few general executor interfaces are made using generics and record. The are located in a *excutor* package (on same level as the *port* package). Again, note how the adapter then does **not** need to know about concrete use-case implementations. Thus, the use-case maven dependency in the adapter is **not** needed - only the domain module dependency.
 
 ### Dependencies
 * the domain i.e. the model (types) and port interfaces.
