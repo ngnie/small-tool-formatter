@@ -156,10 +156,10 @@ Note that *exclude filters* can be used in the @ComponentScan to avoid scanning 
 Basically all except the *core* module i.e. all adapters, use-case and the domain module are needed to instantiate resources.
 
 ### Rules
-Just to keep the "pattern" of rules:
+From a Spring-boot perspective:
 
 * bring in properties.
-* handles dependency management i.e. for Spring-boot it would be @Configuration class (or classes) of:
+* handles dependency management i.e.  @Configuration class (or classes) of:
   * @Bean resource instantiation (as mentioned above).
   * Security config (OAuth 2.0).
   * etc..
