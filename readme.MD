@@ -420,7 +420,7 @@ of the above patterns, it is possible to keep the *eventual consistency* - which
 using this *push* mechanism. So basically, with the above in mind, including event-based step-engine (using *Eventsourcing*) - complete
 error handling 24/7, scaling and performance - with full data transparency in prod - can be achieved for real-time systems (have to be explained in more detail).
 Lastly, there is no *holy grail* - every design -and architecture solution has it's pros and cons. It is just nice to know what is possible and what
-the different technologies offer - and then bring together all the ideas, and based on analysis, find the best solution(s). This way good decisions can be made.
+different technologies offer - and then bring together all the ideas, and based on analysis, find the best solution(s). This way good decisions can be made.
 
 # Warnings
 In my opinion, it is important to remove compile and build warnings. I see it as technical debt. It is just waste of time
