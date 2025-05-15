@@ -404,11 +404,11 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   (subscriber) or to a message broker (e.g. Apache Kafka). It is fine with the dual write (no transaction), since a step-engine will handle the two
   steps of writing to db (step 1) and publish the message (step 2). This way, the message will not be published, if persistence call
   failed (yes, it is async without wait, but can still throw an exception). Note that 24/7 recover with retry and error handling can
-  be performed with event-based step-engine using *Eventsourcing*.
+  be performed with event-based step-engine.
   Apache Cassandra is able to make 9ms writes on average and even faster read because of MemTables (and Key -and Row Caches). Using either
-  of the above patterns it is possible to keep the *eventual consistency* (which is good), but at the same time being notified consistently
-  in a real-time manner using the *push mechanism*. With the above in mind, including event-based step-engine (using Eventsourcing), complete
-  and derterministic error handling, scaling and performance can be achieved (have to be explained in more detail).
+  of the above patterns it is possible to keep the *eventual consistency* - which is good - but at the same time being notified consistently
+  using the *push mechanism*. So basically, with the above in mind, including event-based step-engine (using *Eventsourcing*) - a complete
+  error handling 24/7, scaling and performance - with full data transparency in prod - can be achieved for real-time systems (have to be explained in more detail).
 
 ## Conclusion
 One really have to be careful with Hibernate and designing relational db, if used. I mean, it is important to make both
