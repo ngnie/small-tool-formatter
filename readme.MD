@@ -407,7 +407,7 @@ start to use threads in their monoliths to improve performance (been there my se
 Apache Cassandra provides async future onSuccess callback upon node writes i.e. writing is guaranteed upon callback. But it does
 introduce a *wait* on the future. Retry with maxAttempt for read, could also be introduced, in cases where reading is made
 quickly after writing, but this *pull* strategy is not recommended.
-A better design might be to use *Cassandra CDC* (Change Data Capture) i.e. a listener will be notified upon persistence (event).
+A better design might be to use *Cassandra CDC* (Change Data Capture) i.e. a listener will be notified upon persistence - basically subscribing to *commit log* publisher receiving standardized events.
 This way, no future wait is needed (onSuccess) and the design is clean from a async push-based design view.
 Own CDC listener can be made or Debezium can be used. CDC is not enabled by default on tables, but is done with *alter* setting *cdc = true*.
 If using event-based design -and architechture, then probably a better solution, is to use *dual write* i.e. write async to Cassandra (no future wait) and publish event to either internal listener
