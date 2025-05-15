@@ -407,7 +407,7 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   be performed with event-based step engines.
   Apache Cassandra is able to make 9ms writes on average and even faster read because of MemTables (and Key -and Row Caches). Using either
   of the above patterns it is possible to keep the *eventual consistency* - which is good - but at the same time being notified consistently
-  using the *push mechanism*. So basically, with the above in mind, including event-based step-engine (using *Eventsourcing*) - a complete
+  using this *push* mechanism. So basically, with the above in mind, including event-based step-engine (using *Eventsourcing*) - a complete
   error handling 24/7, scaling and performance - with full data transparency in prod - can be achieved for real-time systems (have to be explained in more detail).
   Lastly, there is no *holy grail* - every design -and architecture solution has it's pros and cons. It is just nice to know what is possible and what
   the different technologies offer - and then bring together all the ideas, and based on analysis, find the best solution(s).
