@@ -401,7 +401,7 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   This way, no future wait is needed (onSuccess) and the design is clean from a async push-based design view.
   Own CDC listener can be made or Debezium can be used. CDC is not enabled by default on tables, but is done with *alter* setting *cdc = true*.
   If using event-based design -and architechture, then probably a better solution, is to use *dual write* i.e. write async to Cassandra (no future wait) and publish event to either internal listener
-  (subscriber) or to a message broker (e.g. Apache Kafka). It is fine with the dual write (no transaction), since a step-engine will handle the two
+  (subscriber) or to a message broker (e.g. Apache Kafka). It is fine with the dual write (no transaction), since a step-engine will (could) handle the two
   steps of writing to db (step 1) and publish the message (step 2). This way, the message will not be published, if persistence call
   failed (the async "without wait" call can still throw an exception). Note that 24/7 recover with retry and error handling can
   be performed with event-based step engines.
