@@ -395,7 +395,7 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
 * indexing - even Oracle starts to slow down on performance when indexing above 1-2 million rows using timebased UUID as primary key.
   I recommend using Apache Cassandra (or other distributed db) if working with these data requirements - in particular *joins*.
   Apache Cassandra provides async future onSuccess callback upon node writes i.e. writing is guaranteed upon callback. But it does
-  introduce a *wait* on the future. Retry with maxAttempt for read, could alse be introduced, in cases where reading is made
+  introduce a *wait* on the future. Retry with maxAttempt for read, could also be introduced, in cases where reading is made
   quickly after writing, but this *pull* strategy is not recommended.
   A better design might be to use Cassandra CDC (Change Data Capture) i.e. a listener will be notified upon persistence (event).
   This way, no future wait is needed (onSuccess) and the design is clean from a async-, trigger-, push-based design view.
