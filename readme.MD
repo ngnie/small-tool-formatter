@@ -397,18 +397,20 @@ My comment on Hibernate. Many people like Hibernate and I agree to some extent.
   Apache Cassandra provides async future onSuccess callback upon node writes i.e. writing is guaranteed upon callback. But it does
   introduce a *wait* on the future. Retry with maxAttempt for read, could also be introduced, in cases where reading is made
   quickly after writing, but this *pull* strategy is not recommended.
-  A better design might be to use Cassandra CDC (Change Data Capture) i.e. a listener will be notified upon persistence (event).
-  This way, no future wait is needed (onSuccess) and the design is clean from a async-, trigger-, push-based design view.
-  Own CDC listener can be made or using Debezium. CDC is not enabled by default on tables, but is done with *alter* setting *cdc = true*.
+  A better design might be to use *Cassandra CDC* (Change Data Capture) i.e. a listener will be notified upon persistence (event).
+  This way, no future wait is needed (onSuccess) and the design is clean from a async push-based design view.
+  Own CDC listener can be made or Debezium can be used. CDC is not enabled by default on tables, but is done with *alter* setting *cdc = true*.
   If using event based design and architechture, then probably a better solution, is to use *dual write* i.e. write async to Cassandra (no future wait) and publish event to either internal listener
   (subscriber) or to a message broker (e.g. Apache Kafka). It is fine with the dual write (no transaction), since a step-engine will handle the two
   steps of writing to db (step 1) and publish the message (step 2). This way, the message will not be published, if persistence call
-  failed (yes, it is async without wait, but can still throw an exception). Note that 24/7 recover with retry and error handling can
-  be performed with event-based step-engine.
+  failed (the async "without wait" call can still throw an exception). Note that 24/7 recover with retry and error handling can
+  be performed with event-based step engines.
   Apache Cassandra is able to make 9ms writes on average and even faster read because of MemTables (and Key -and Row Caches). Using either
   of the above patterns it is possible to keep the *eventual consistency* - which is good - but at the same time being notified consistently
   using the *push mechanism*. So basically, with the above in mind, including event-based step-engine (using *Eventsourcing*) - a complete
   error handling 24/7, scaling and performance - with full data transparency in prod - can be achieved for real-time systems (have to be explained in more detail).
+  Lastly, there is no *holy grail* - every design -and architecture solution has it's pros and cons. It is just nice to know what is possible and what
+  the different technologies offer - and then bring together all the ideas, and based on analysis, find the best solution(s).
 
 ## Conclusion
 One really have to be careful with Hibernate and designing relational db, if used. I mean, it is important to make both
