@@ -228,7 +228,7 @@ Instead of:
 I could have used:
 
     Optional<FormatEnum> oFormatEnum = Optional.empty();
-    Optional<Integer: width = Optional.empty();
+    Optional<Integer> width = Optional.empty();
 
 And then e.g.
 
@@ -370,7 +370,7 @@ Also, *default* is not needed (throwing an exception) in the switch.
 My comment on Hibernate. Many people like Hibernate and I agree to some extent. 
 
 ## Pros
-* it is really fast for prototyping (but then my "praise" stops).
+* it is fast for prototyping (but then my "praise" stops).
  
 ## Cons
 * Hibernate is making a lot of objects, and it can be a problem for the garbage collector if reading a lot
