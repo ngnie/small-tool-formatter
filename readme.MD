@@ -228,7 +228,7 @@ Instead of:
 I could have used:
 
     Optional<FormatEnum> oFormatEnum = Optional.empty();
-    Optional<Integer> width = Optional.empty();
+    Optional<Integer> oWidth = Optional.empty();
 
 And then e.g.
 
