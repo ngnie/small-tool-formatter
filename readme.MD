@@ -472,20 +472,22 @@ Below are some unit test examples i.e. the way I make unit tests using Spring-bo
     public class RestControllerTest {
 
       @MockBean
-      private BusinessInterfaceToMock businessInterfaceToMock;
+      private Executor<SomeDomainType> executor;
 
       private final MockMvc;
 
       @Test
       public void test() {
 
-          Mockito.when(.. on the businessInterfaceToMock..);
+          Mockito.when(.. on the executor interface..);
 
           mockMvc.perform
             .. and then
             .andExpect(..)
       }
     }
+
+In the above, the *executor* interface, implemented by the use-case in the production code, is mocked - not a concrete implementation of the use-case.
 
 ### Use-case unit test
 Again, if using the Port and Adapter pattern the unit test will be very simple only using domain model types and port
